@@ -1,3 +1,7 @@
+// ====================================================================
+    VERSION VAL DU 08 AOUT 2026                           
+// ====================================================================
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -9,6 +13,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 
   <style>
     :root {
@@ -122,10 +127,11 @@
 <body>
 
 <header>
-  <div class="header-title">🧪 CATACYTO <span style="font-size: 0.9rem; font-weight: normal; opacity: 0.8;">v2026.1 - Préparation des chimiothérapies en mode dégradé -</span></div>
+  <div class="header-title">🧪CATACYTO <span style="font-size: 0.9rem; font-weight: normal; opacity: 0.8;">v2026.1 - Préparation des chimiothérapies en mode dégradé -</span></div>
   <div class="nav-tabs">
     <button class="tab-btn active" onclick="switchTab('tab-frontend')">🧪 CATACYTOapp</button>
     <button class="tab-btn" onclick="switchTab('tab-backend')">🗄️ Gestion des données</button>
+    <button class="tab-btn" onclick="switchTab('tab-generator')">🖨️ GENERATORapp</button>
     <button class="tab-btn" onclick="switchTab('tab-docs')">📖 Mode d'emploi</button>
     <button class="tab-btn" onclick="switchTab('tab-audit')">🔍 Audit & Logs</button>
   </div>
@@ -415,6 +421,39 @@
 
       <h4 style="margin-top: 20px;">4. Compatibilité Unités</h4>
       <div class="table-responsive"><table id="tableUnits"><thead></thead><tbody></tbody></table></div>
+    </div>
+  </div>
+
+  <!-- ==================================================================== -->
+  <!-- TAB 2bis : GENERATORapp (Fiches vierges pré-remplies)                -->
+  <!-- ==================================================================== -->
+  <div id="tab-generator" class="tab-content">
+    <div class="card">
+      <h2 class="card-title">🖨️ GENERATORapp</h2>
+      <h3>About</h3>
+      <p style="line-height: 1.6;">GENERATORapp est le mode dégradé papier.</p>
+    </div>
+
+    <div class="card">
+      <h3 class="card-title">📋 Génération de fiches vierges</h3>
+      <p style="font-size: 0.9rem; color: #555;">
+        Sélectionnez une plage de thérapies (selon leur position dans la base <code>therapiesDB</code>) pour générer,
+        pour chacune d'elles, une fiche de préparation pré-remplie (vierge, à compléter manuellement) au format PDF —
+        structure identique à la fiche de production, avec en-tête, tableau "Données & Calculs", liste du matériel,
+        étapes de préparation, contrôles & visas et étiquettes.
+      </p>
+      <div class="grid">
+        <div class="field">
+          <label for="genRangeFrom">De (N° thérapie) :</label>
+          <input type="number" id="genRangeFrom" min="1" value="1">
+        </div>
+        <div class="field">
+          <label for="genRangeTo">À (N° thérapie) :</label>
+          <input type="number" id="genRangeTo" min="1" value="1">
+        </div>
+      </div>
+      <p class="sub-text" id="genRangeInfo" style="margin-top: 5px;"></p>
+      <button class="btn btn-primary" id="genRangeBtn" onclick="generateFichesRange()" style="margin-top: 10px;">📄 Générer les fiches</button>
     </div>
   </div>
 
@@ -9867,7 +9906,7 @@
       { cells: [{ text: 'Date de naissance :', bold: true }, { text: fmtDateISO(p.birthDate) }] },
       { cells: [{ text: 'Taille (cm) :', bold: true }, { text: safe(p.heightCm) }] },
       { cells: [{ text: 'Poids (kg) :', bold: true }, { text: safe(p.weightKg) }] },
-      { cells: [{ text: 'Surface Mosteller (m²) :', bold: true }, { text: bsaStr, note: '√(Taille × Poids / 3600)' }] },
+      { cells: [{ text: 'Surface Mosteller (m²) :', bold: true }, { text: bsaStr, note: 'Racine(Taille × Poids / 3600)' }] },
       { cells: [{ text: 'Cycle :', bold: true }, { text: safe(cycleVal) }] },
       { cells: [{ text: 'Jour :', bold: true }, { text: safe(dayVal) }] },
       { cells: [{ text: 'Posologie complète :', bold: true }, { text: posologyComplete }] },
@@ -9894,6 +9933,510 @@
     y = drawTable(y, recapRows, [55, 135]);
 
     doc.save(`${prepId}_Fiche_Preparation.pdf`);
+  }
+
+  // ============================================================================
+  // 4bis. GENERATORapp — FICHES VIERGES PRÉ-REMPLIES (réplique pdf_fiche_generator.py)
+  // ============================================================================
+
+  function refreshGeneratorRangeUI() {
+    const fromEl = document.getElementById('genRangeFrom');
+    const toEl = document.getElementById('genRangeTo');
+    const infoEl = document.getElementById('genRangeInfo');
+    if (!fromEl || !toEl || !infoEl) return;
+    const maxN = therapiesDB.length || 1;
+    fromEl.min = 1; toEl.min = 1;
+    fromEl.max = maxN; toEl.max = maxN;
+    let fromVal = parseInt(fromEl.value, 10) || 1;
+    let toVal = parseInt(toEl.value, 10) || 1;
+    fromVal = Math.min(Math.max(fromVal, 1), maxN);
+    toVal = Math.min(Math.max(toVal, 1), maxN);
+    fromEl.value = fromVal;
+    toEl.value = toVal;
+    infoEl.textContent = `Thérapies référencées : N° 1 à N° ${maxN} (total : ${maxN} thérapie${maxN > 1 ? 's' : ''}).`;
+  }
+
+  /**
+   * Génère et télécharge une fiche PDF distincte par thérapie de la plage sélectionnée
+   * (position dans therapiesDB, 1 = première thérapie référencée).
+   */
+  function generateFichesRange() {
+    if (!therapiesDB.length) { alert("Aucune thérapie disponible dans therapiesDB."); return; }
+    const maxN = therapiesDB.length;
+    let from = parseInt(document.getElementById('genRangeFrom').value, 10) || 1;
+    let to = parseInt(document.getElementById('genRangeTo').value, 10) || 1;
+    from = Math.min(Math.max(from, 1), maxN);
+    to = Math.min(Math.max(to, 1), maxN);
+    if (from > to) { const t = from; from = to; to = t; }
+    document.getElementById('genRangeFrom').value = from;
+    document.getElementById('genRangeTo').value = to;
+
+    const count = to - from + 1;
+    if (count > 40 && !confirm(`Vous êtes sur le point de générer ${count} fiches PDF. Continuer ?`)) {
+      return;
+    }
+
+    // Génération de tous les documents en mémoire (sans téléchargement individuel)
+    const results = [];
+    for (let i = from; i <= to; i++) {
+      const therapy = therapiesDB[i - 1];
+      const result = generateBlankFichePdf(therapy, i);
+      if (result) results.push(result);
+    }
+    if (!results.length) return;
+
+    // 1 seule fiche → PDF direct. Plusieurs fiches → archive .zip groupée.
+    if (results.length === 1) {
+      results[0].doc.save(results[0].filename);
+      return;
+    }
+
+    if (!window.JSZip) {
+      alert("La librairie JSZip n'est pas chargée : les fichiers seront téléchargés individuellement.");
+      results.forEach((r, idx) => setTimeout(() => r.doc.save(r.filename), idx * 400));
+      return;
+    }
+
+    const zip = new JSZip();
+    results.forEach((r) => { zip.file(r.filename, r.doc.output('blob')); });
+    zip.generateAsync({ type: 'blob' }).then((zipBlob) => {
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(zipBlob);
+      a.download = `Fiches_GENERATORapp_${from}-${to}_${new Date().toISOString().slice(0, 10)}.zip`;
+      a.click();
+      URL.revokeObjectURL(a.href);
+    }).catch((e) => {
+      console.error(e);
+      alert("Erreur lors de la création de l'archive .zip. Téléchargement individuel des fichiers à la place.");
+      results.forEach((r, idx) => setTimeout(() => r.doc.save(r.filename), idx * 400));
+    });
+  }
+
+  /**
+   * Génère une fiche PDF vierge pré-remplie pour une thérapie donnée.
+   * Structure, styles et mise en page répliqués depuis pdf_fiche_generator.py :
+   *  - En-tête + numéro de page répétés sur CHAQUE page (contrairement à generatePreparationPdf)
+   *  - Page 1 : bannière (10mm) + tableau "Données & Calculs" (4 colonnes, avec fusions)
+   *  - Page 2 : bannière répétée + "Infos générales" (statique) + Produits/Matériel + Préparation + Contrôles & Visas
+   *  - Page 3 : 2 étiquettes (10 × 5.4cm) empilées verticalement
+   * Retourne { doc, filename } (ne télécharge pas directement, pour permettre le regroupement en .zip).
+   */
+  function generateBlankFichePdf(therapy, indexNum) {
+    if (!window.jspdf || !window.jspdf.jsPDF) {
+      alert("Erreur: La librairie jsPDF n'est pas chargée.");
+      return;
+    }
+    if (!therapy) return;
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait' });
+
+    const pageW = 210;
+    const pageH = 297;
+    const mL = 10;
+    const mR = 10;
+    const contentW = pageW - mL - mR; // 190mm
+    const TOP_START = 20;             // topMargin Python (place pour l'en-tête répété)
+    const BOTTOM_LIMIT = pageH - 15;  // bottomMargin Python
+
+    const safe = (v) => (v === null || v === undefined || v === '') ? '' : String(v);
+
+    // ---------- Constantes de style (identiques à generatePreparationPdf) ----------
+    const COLOR_HEADER = [102, 102, 102];
+    const COLOR_BLUE = [45, 146, 240];
+    const COLOR_TEXT = [51, 51, 51];
+    const COLOR_GREY = [128, 128, 128];
+    const COLOR_GREY_DARK = [64, 64, 64];
+
+    let pageNum = 1;
+
+    // ---------- En-tête + pied de page : répétés sur CHAQUE page ----------
+    function drawHeader() {
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(13.9);
+      doc.setTextColor(...COLOR_HEADER);
+      doc.text('Pharmacie CHUV - Préparation de chimiothérapie - Mode Dégradé', pageW / 2, 8, { align: 'center' });
+      doc.setDrawColor(0, 0, 0);
+      doc.setLineWidth(0.7);
+      doc.line(mL, 16, pageW - mR, 16);
+    }
+    function drawFooter(num) {
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(9);
+      doc.setTextColor(0, 0, 0);
+      doc.text(`Page ${num}`, pageW / 2, pageH - 10, { align: 'center' });
+    }
+    function newPage() {
+      doc.addPage('a4', 'portrait');
+      pageNum += 1;
+      drawHeader();
+      drawFooter(pageNum);
+      return TOP_START;
+    }
+    drawHeader();
+    drawFooter(pageNum);
+
+    function drawBanner(y, text) {
+      const h = 10;
+      doc.setFillColor(...COLOR_BLUE);
+      doc.rect(mL, y, contentW, h, 'F');
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(12);
+      doc.setTextColor(255, 255, 255);
+      const lines = doc.splitTextToSize(safe(text), contentW - 8);
+      const lineH = 18 * 0.3528;
+      let textY = y + h / 2 - ((lines.length - 1) * lineH) / 2 + 1.4;
+      lines.forEach((line) => {
+        doc.text(line, mL + contentW / 2, textY, { align: 'center' });
+        textY += lineH;
+      });
+      return y + h + 2.5;
+    }
+
+    function sectionTitle(y, text) {
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(12);
+      doc.setTextColor(...COLOR_BLUE);
+      doc.text(text, mL, y + 4);
+      return y + 4.94 + 2;
+    }
+
+    function wrapText(text, w, size, style) {
+      doc.setFont('helvetica', style || 'normal');
+      doc.setFontSize(size);
+      const paragraphs = safe(text).split('\n');
+      let lines = [];
+      paragraphs.forEach((p) => {
+        if (p === '') { lines.push(''); return; }
+        lines = lines.concat(doc.splitTextToSize(p, Math.max(5, w)));
+      });
+      return lines.length ? lines : [''];
+    }
+
+    /** Tableau générique avec BOX 1pt noir + INNERGRID 0.5pt gris, fusions (colspan) et pagination automatique. */
+    function drawTable(startY, rows, colWidths, opts = {}) {
+      const fontSize = opts.fontSize || 10.9;
+      const padX = opts.padX != null ? opts.padX : 3;
+      const padY = opts.padY != null ? opts.padY : 1;
+      const lineH = opts.lineH || 4.6;
+      const minH = opts.minH != null ? opts.minH : 6.2;
+      const x0 = mL;
+      const totalW = colWidths.reduce((a, b) => a + b, 0);
+      const colOffsets = [0];
+      colWidths.forEach((w) => colOffsets.push(colOffsets[colOffsets.length - 1] + w));
+
+      const rowHeights = rows.map((row) => {
+        let maxLines = 1;
+        let colIdx = 0;
+        row.cells.forEach((cell) => {
+          const span = cell.colspan || 1;
+          let w = 0;
+          for (let s = 0; s < span; s++) w += (colWidths[colIdx + s] || 0);
+          const innerW = Math.max(5, w - padX * 2);
+          const lines = wrapText(cell.text, innerW, fontSize, cell.bold ? 'bold' : 'normal').length;
+          maxLines = Math.max(maxLines, lines);
+          colIdx += span;
+        });
+        return Math.max(minH, maxLines * lineH + padY * 2);
+      });
+
+      const rowBoundaries = rows.map((row) => {
+        const bounds = [];
+        let colIdx = 0;
+        row.cells.forEach((cell, ci) => {
+          const span = cell.colspan || 1;
+          if (ci > 0) bounds.push(colOffsets[colIdx]);
+          colIdx += span;
+        });
+        return bounds;
+      });
+
+      const pages = [];
+      let pageStartY = startY, curY = startY, curRows = [];
+      rows.forEach((row, i) => {
+        const rh = rowHeights[i];
+        if (curY + rh > BOTTOM_LIMIT && curRows.length > 0) {
+          pages.push({ startY: pageStartY, rows: curRows });
+          pageStartY = TOP_START; curY = TOP_START; curRows = [];
+        }
+        curRows.push({ row, idx: i, y: curY, h: rh });
+        curY += rh;
+      });
+      pages.push({ startY: pageStartY, rows: curRows });
+
+      let lastEndY = startY;
+      pages.forEach((pg, pgi) => {
+        if (pgi > 0) newPage();
+        const tableH = pg.rows.reduce((a, r) => a + r.h, 0);
+        const thisStartY = pg.startY;
+
+        pg.rows.forEach(({ row, h, y: ry }) => {
+          let cx = x0, colIdx = 0;
+          row.cells.forEach((cell) => {
+            const span = cell.colspan || 1;
+            let w = 0;
+            for (let s = 0; s < span; s++) w += (colWidths[colIdx + s] || 0);
+            const lines = wrapText(cell.text, Math.max(5, w - padX * 2), fontSize, cell.bold ? 'bold' : 'normal');
+            doc.setFont('helvetica', cell.bold ? 'bold' : 'normal');
+            doc.setFontSize(fontSize);
+            doc.setTextColor(...COLOR_TEXT);
+            let ty = ry + padY + lineH * 0.78;
+            lines.forEach((line) => { doc.text(line, cx + padX, ty); ty += lineH; });
+            cx += w;
+            colIdx += span;
+          });
+        });
+
+        doc.setDrawColor(0, 0, 0);
+        doc.setLineWidth(0.35);
+        doc.rect(x0, thisStartY, totalW, tableH);
+
+        doc.setDrawColor(...COLOR_GREY);
+        doc.setLineWidth(0.18);
+        let cy = thisStartY;
+        for (let i = 0; i < pg.rows.length - 1; i++) { cy += pg.rows[i].h; doc.line(x0, cy, x0 + totalW, cy); }
+
+        let cyv = thisStartY;
+        pg.rows.forEach(({ h, idx }) => {
+          rowBoundaries[idx].forEach((off) => { doc.line(x0 + off, cyv, x0 + off, cyv + h); });
+          cyv += h;
+        });
+
+        lastEndY = thisStartY + tableH;
+      });
+
+      return lastEndY;
+    }
+
+    // ---------- Valeurs dérivées de la thérapie (sources : therapiesDB / proceduresDB) ----------
+    const drugName = safe(therapy.DrugDCI);
+    const route = safe(therapy.administrationRoute) || 'IV';
+    const deviceName = safe(therapy.administrationDevice);
+    const deviceVol = therapy.administrationDeviceVolumeValue != null
+      ? `${therapy.administrationDeviceVolumeValue} ${safe(therapy.administrationDeviceVolumeUnit) || 'mL'}`
+      : '';
+    const filling = safe(therapy.adminDeviceFillingProcedure);
+
+    // Titre principal (bannière) : uniquement les infos fixes de la thérapie (pas de patient/dose ici)
+    let titrePrincipal = drugName;
+    if (route) titrePrincipal += ` — ${route}`;
+    if (deviceName) {
+      titrePrincipal += ` — dans ${deviceName}`;
+      if (deviceVol) titrePrincipal += ` ${deviceVol}`;
+    }
+    if (filling) titrePrincipal += ` ${filling}`;
+    if (filling === 'AD' && therapy.finalVolumeMlifAD != null) titrePrincipal += ` ${therapy.finalVolumeMlifAD} mL`;
+
+    const articleValue = [
+      drugName,
+      therapy.concentrationValue != null ? String(therapy.concentrationValue) : '',
+      safe(therapy.concentrationUnit),
+      '-',
+      therapy.vialVolumeMl != null ? String(therapy.vialVolumeMl) : '',
+      'mL'
+    ].filter(x => x !== '').join(' ').replace(/\s+-\s+/, ' - ');
+
+    let reconstitutionDisplay = 'NON';
+    if (therapy.Reconstitution) {
+      reconstitutionDisplay = [
+        safe(therapy.reconstitutionDiluent) || 'Solvant',
+        therapy.reconstitutionDiluentVolumeMl != null ? `${therapy.reconstitutionDiluentVolumeMl} mL` : ''
+      ].filter(Boolean).join(' ');
+    }
+
+    const conservationParts = [];
+    if (therapy.storageTimeValue != null) {
+      try { conservationParts.push(String(parseInt(Number(therapy.storageTimeValue), 10))); }
+      catch (e) { conservationParts.push(String(therapy.storageTimeValue)); }
+    }
+    if (therapy.storageTimeUnit) conservationParts.push(therapy.storageTimeUnit);
+    if (therapy.storageCondition) conservationParts.push(therapy.storageCondition);
+    if (therapy.protectFromLight) conservationParts.push('Abri de la lumiere');
+    const conservationValue = conservationParts.join(' - ');
+
+    const dispositifValue = deviceName; // pas de volume ajouté (fidèle à pdf_fiche_generator.py)
+    const typeRemplissageValue = filling;
+
+    let volumeFinalDisplay1 = 'Calcul :'; // pour le tableau "Données & Calculs"
+    let volumeFinalDisplay2 = '_________    — Visa Contrôle :'; // pour le tableau "Préparation"
+    if (filling === 'AD' && therapy.finalVolumeMlifAD != null) {
+      volumeFinalDisplay1 = `AD ${therapy.finalVolumeMlifAD} mL`;
+      volumeFinalDisplay2 = `${therapy.finalVolumeMlifAD} mL    — Visa Contrôle :`;
+    }
+
+    const keyProcedure = `${therapy.administrationDevice || ''}${therapy.Reconstitution ? 'True' : 'False'}${therapy.adminDeviceFillingProcedure || ''}`;
+    const proc = proceduresDB.find(pr => pr.keyProcedure === keyProcedure) || {};
+    const materialsList = proc.materials || [];
+    const stepsList = proc.steps || [];
+    const materialsText = materialsList.length ? materialsList.join('\n') : '';
+    const stepsText = stepsList.length ? stepsList.map((s, i) => `${i + 1}. ${s}`).join('\n') : '';
+
+    // ============================================================
+    // PAGE 1 — Bannière + "Données & Calculs"
+    // ============================================================
+    let y = TOP_START;
+    y = drawBanner(y, titrePrincipal);
+
+    y = sectionTitle(y, 'Données & Calculs');
+    const donneesCalculsRows = [
+      { cells: [{ text: 'Préparation :', bold: true }, { text: titrePrincipal, colspan: 3 }] },
+      { cells: [{ text: 'Prep-ID :', bold: true }, { text: '' }, { text: 'Service :', bold: true }, { text: '' }] },
+      { cells: [{ text: 'IPP patient :', bold: true }, { text: '' }, { text: 'Nom & Prénom :', bold: true }, { text: '' }] },
+      { cells: [{ text: 'Né(e) le :', bold: true }, { text: '' }, { text: 'Genre :', bold: true }, { text: '' }] },
+      { cells: [{ text: 'Taille (cm) :', bold: true }, { text: '' }, { text: 'Poids (kg) :', bold: true }, { text: '' }] },
+      { cells: [{ text: 'Calcul surface corp. selon Mosteller (m2)', bold: true }, { text: 'Racine(Taille(cm) × Poids(kg) / 3600) =', colspan: 3 }] },
+      { cells: [{ text: 'Dose prescrite :', bold: true }, { text: '', colspan: 3 }] },
+      { cells: [{ text: 'Concentration :', bold: true }, { text: '', colspan: 3 }] },
+      { cells: [{ text: 'Volume de principe actif :', bold: true }, { text: '', colspan: 3 }] },
+      { cells: [{ text: 'Volume de diluant :', bold: true }, { text: '', colspan: 3 }] },
+      { cells: [{ text: 'Volume final :', bold: true }, { text: volumeFinalDisplay1, colspan: 3 }] },
+      { cells: [{ text: 'Article :', bold: true }, { text: articleValue, colspan: 3 }] },
+      { cells: [{ text: 'Reconstitution :', bold: true }, { text: reconstitutionDisplay, colspan: 3 }] },
+      { cells: [{ text: "Dispositif d'administration :", bold: true }, { text: dispositifValue, colspan: 3 }] },
+      { cells: [{ text: 'Type de remplissage :', bold: true }, { text: typeRemplissageValue, colspan: 3 }] },
+      { cells: [{ text: 'Conservation :', bold: true }, { text: conservationValue, colspan: 3 }] },
+      { cells: [{ text: 'Calculs :', bold: true }, { text: '', colspan: 3 }] },
+      { cells: [{ text: 'Contrôles :', bold: true }, { text: '', colspan: 3 }] },
+      { cells: [{ text: 'Préparé par :', bold: true }, { text: '', colspan: 3 }] },
+      { cells: [{ text: 'Préparé le :', bold: true }, { text: '', colspan: 3 }] },
+      { cells: [{ text: 'Contrôlé par :', bold: true }, { text: '', colspan: 3 }] },
+      { cells: [{ text: 'Contrôlé le :', bold: true }, { text: '', colspan: 3 }] },
+      { cells: [{ text: 'Validé par :', bold: true }, { text: '', colspan: 3 }] },
+      { cells: [{ text: 'Contrôlé par :', bold: true }, { text: 'Données et calculs contrôlés par :', colspan: 3 }] },
+      { cells: [{ text: 'Statut préparation :', bold: true }, { text: 'Valide / NON-Valide / — Le : ___/___/____', colspan: 3 }] }
+    ];
+    y = drawTable(y, donneesCalculsRows, [45, 45, 45, 45]);
+
+    // ============================================================
+    // PAGE 2 — Bannière répétée + Infos générales + Produits + Préparation + Contrôles
+    // ============================================================
+    y = newPage();
+    y = drawBanner(y, titrePrincipal);
+
+    const infosGeneralesRows = [
+      { cells: [{ text: 'Prep-ID : _________ Service : _________', colspan: 6 }] },
+      { cells: [{ text: 'Nom :_____________ Prénom : _____________ DDN :___/___/____ Cure :___ J :___ ', colspan: 6 }] },
+      { cells: [{ text: 'Dose prescrite : _______ Dans : ____ mL de : NaCl / G5 / G10 / Ringer / Sans diluant / Autre : ________', colspan: 6 }] },
+      { cells: [{ text: 'Remarque du valideur : ________________________________________________________________', colspan: 6 }] },
+      { cells: [{ text: 'Statut : Valide / NON-Valide / — Valideur : _______________ Le : _______________', colspan: 6 }] }
+    ];
+    y = drawTable(y, infosGeneralesRows, [35, 30, 25, 30, 25, 50]);
+
+    doc.setDrawColor(0, 0, 0);
+    doc.setLineWidth(0.35);
+    doc.line(mL, y, mL + contentW, y);
+    y += 2.5;
+
+    y = sectionTitle(y, 'Liste des produits et du matériel');
+    const listeProduitsRows = [
+      { cells: [{ text: 'Article :', bold: true }, { text: articleValue }] },
+      { cells: [{ text: 'Quantité :', bold: true }, { text: '_____    Pièce. — Lot & Exp. :' }] },
+      { cells: [{ text: 'Diluant :', bold: true }, { text: '_________    — Volume :_________ mL — Lot & Exp. :' }] },
+      { cells: [{ text: 'Matériel :', bold: true }, { text: materialsText }] }
+    ];
+    y = drawTable(y, listeProduitsRows, [30, 160]);
+    y += 2.5;
+
+    y = sectionTitle(y, 'Préparation');
+    const preparationRows = [
+      { cells: [{ text: 'Principe Actif :', bold: true }, { text: drugName }] },
+      { cells: [{ text: 'Reconstitution :', bold: true }, { text: `${reconstitutionDisplay}    — Lot & Exp. :` }] },
+      { cells: [{ text: 'Volume de P. Actif :', bold: true }, { text: '_________    — Visa Contrôle :' }] },
+      { cells: [{ text: 'Diluant :', bold: true }, { text: '_________    — Visa Contrôle :' }] },
+      { cells: [{ text: "Dispositif d'admin. :", bold: true }, { text: dispositifValue }] },
+      { cells: [{ text: 'Type de remplissage :', bold: true }, { text: typeRemplissageValue }] },
+      { cells: [{ text: 'Volume final :', bold: true }, { text: volumeFinalDisplay2 }] },
+      { cells: [{ text: 'Remarque pour la préparation :', bold: true }, { text: '' }] },
+      { cells: [{ text: 'Étapes de préparation :', bold: true }, { text: stepsText }] }
+    ];
+    y = drawTable(y, preparationRows, [55, 135]);
+    y += 2.5;
+
+    y = sectionTitle(y, 'Contrôles & Visas');
+    const controlesRows = [
+      { cells: [{ text: 'Date & Isolateur :', bold: true }, { text: 'Produit le :' }, { text: 'Isolateur :' }] },
+      { cells: [{ text: 'Contrôles Préparateurs :', bold: true }, { text: 'Visa 1 :' }, { text: 'Visa 2 :' }] },
+      { cells: [{ text: 'Contrôles Pharmaciens :', bold: true }, { text: 'Visa 1 :' }, { text: 'Visa 2 :' }] },
+      { cells: [{ text: 'Statut :', bold: true }, { text: 'Libéré' }, { text: 'Non libéré' }] }
+    ];
+    y = drawTable(y, controlesRows, [55, 67.5, 67.5]);
+
+    // ============================================================
+    // PAGE 3 — Étiquettes (2 × 10 × 5.4cm, empilées)
+    // ============================================================
+    y = newPage();
+    y = sectionTitle(y, 'Étiquettes de préparation (10 × 5.4 cm)');
+    y += 1; // Spacer(3mm) au total avec les 2mm déjà inclus dans sectionTitle()
+
+    function drawLabel(x, yTop) {
+      const ew = 100, eh = 54, pad = 3;
+      doc.setDrawColor(...COLOR_GREY_DARK);
+      doc.setLineWidth(0.18);
+      doc.rect(x, yTop, ew, eh);
+
+      const ix = x + pad, iy = yTop + pad, iw = ew - pad * 2, ih = eh - pad * 2;
+      doc.setDrawColor(0, 0, 0);
+      doc.setLineWidth(0.35);
+      doc.rect(ix, iy, iw, ih);
+
+      const rowsH = [6, 8, 5, 10, 6, 8, 5];
+      let cy = iy;
+      const rowY = [cy];
+      rowsH.forEach((h) => { cy += h; rowY.push(cy); });
+      [0, 2, 4].forEach((idx) => { doc.line(ix, rowY[idx + 1], ix + iw, rowY[idx + 1]); });
+
+      const midX = ix + iw / 2;
+
+      doc.setFont('helvetica', 'bold'); doc.setFontSize(9); doc.setTextColor(...COLOR_TEXT);
+      doc.text('Chimiothérapie - Pharmacie du CHUV', midX, rowY[0] + rowsH[0] / 2 + 1.4, { align: 'center' });
+
+      doc.setFont('helvetica', 'normal'); doc.setFontSize(8);
+      doc.text('Prénom & Nom : ______________________________________', midX, rowY[1] + rowsH[1] / 2 + 1.3, { align: 'center' });
+
+      doc.text('Né le : _____________ Service _______ : IPP : _______', midX, rowY[2] + rowsH[2] / 2 + 1.3, { align: 'center' });
+
+      doc.setFont('helvetica', 'bold'); doc.setFontSize(9);
+      const titreLines = doc.splitTextToSize(titrePrincipal, iw - 3);
+      const r4LineH = 3.6;
+      let r4y = rowY[3] + rowsH[3] / 2 - ((titreLines.length - 1) * r4LineH) / 2 + 1.3;
+      titreLines.forEach((line) => { doc.text(line, midX, r4y, { align: 'center' }); r4y += r4LineH; });
+
+      doc.setFont('helvetica', 'normal'); doc.setFontSize(8);
+      doc.text('Médication (Prep-ID) : _____________', midX, rowY[4] + rowsH[4] / 2 + 1.3, { align: 'center' });
+
+      const consLines = doc.splitTextToSize(safe(conservationValue), iw - 3);
+      const r6LineH = 3.2;
+      let r6y = rowY[5] + rowsH[5] / 2 - ((consLines.length - 1) * r6LineH) / 2 + 1.1;
+      consLines.forEach((line) => { doc.text(line, midX, r6y, { align: 'center' }); r6y += r6LineH; });
+
+      doc.setFontSize(8);
+      doc.text('Fabriqué le : ___________ Périmé le : ___________', midX, rowY[6] + rowsH[6] / 2 + 1.3, { align: 'center' });
+    }
+
+    const labelW = 100, labelH = 54, gapY = 5;
+    const startX = mL + (105 - labelW) / 2; // cadre centré dans une colonne de 105mm (comme le Table Python)
+    drawLabel(startX, y);
+    drawLabel(startX, y + labelH + gapY);
+
+    doc.setFont('helvetica', 'italic');
+    doc.setFontSize(9);
+    doc.setTextColor(...COLOR_GREY);
+    doc.text(
+      'Découper les étiquettes selon les bordures pour coller sur les préparations.',
+      mL + contentW / 2,
+      y + labelH * 2 + gapY + 8,
+      { align: 'center' }
+    );
+
+    const fileSuffix = String(indexNum).padStart(3, '0');
+    // Nom de fichier basé sur le même titre que celui affiché dans le PDF (bannière),
+    // nettoyé des caractères non compatibles avec un nom de fichier.
+    const safeTitre = titrePrincipal
+      .normalize('NFD').replace(/[\u0300-\u036f]/g, '') // accents -> lettres simples
+      .replace(/[^a-zA-Z0-9]+/g, '_')
+      .replace(/^_+|_+$/g, '')
+      .slice(0, 80) || 'Therapie';
+    const filename = `Fiche_${fileSuffix}_${safeTitre}.pdf`;
+    return { doc, filename };
   }
 
   // ============================================================================
@@ -10036,6 +10579,7 @@
     initDropdowns();
     refreshBackendTables();
     renderAuditLogs();
+    refreshGeneratorRangeUI();
   }
 
   function initDropdowns() {
