@@ -1,4 +1,4 @@
-//===========================  VERSION LIGHT POUR VAL  =============================//
+==========================    VERSION FULL POUR VAL 10 aout 2026     ============================
 
 <!DOCTYPE html>
 <html lang="fr">
@@ -10651,13 +10651,72 @@
       a.download = `CATACYTO_Bases_Donnees_${new Date().toISOString().slice(0,10)}.json`;
       a.click();
     } else if (format === 'xlsx') {
+      // XLSX.utils.json_to_sheet() ne sérialise pas les valeurs de type tableau
+      // (ex: materials, steps, allowedConcentrationUnits) -> on les convertit en texte avant export.
+      const proceduresForExport = proceduresDB.map(p => ({
+        ...p,
+        materials: Array.isArray(p.materials) ? p.materials.join('\n') : (p.materials || ''),
+        steps: Array.isArray(p.steps) ? p.steps.join('\n') : (p.steps || '')
+      }));
+      const prescriptionUnitsForExport = prescriptionUnitsDB.map(u => ({
+        ...u,
+        allowedConcentrationUnits: Array.isArray(u.allowedConcentrationUnits)
+          ? u.allowedConcentrationUnits.join(', ')
+          : (u.allowedConcentrationUnits || '')
+      }));
+
       const wb = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(therapiesDB), 'therapiesDB');
-      XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(proceduresDB), 'proceduresDB');
+      XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(proceduresForExport), 'proceduresDB');
       XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(diluentsDB), 'diluentsDB');
-      XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(prescriptionUnitsDB), 'prescriptionUnitsDB');
+      XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(prescriptionUnitsForExport), 'prescriptionUnitsDB');
       XLSX.writeFile(wb, `CATACYTO_Bases_Donnees_${new Date().toISOString().slice(0,10)}.xlsx`);
     }
+  }
+
+  /**
+   * Remet en forme les données importées (JSON ou Excel) selon la base ciblée :
+   *  - proceduresDB : "materials" / "steps" -> tableau (reconverti depuis le texte multi-lignes Excel)
+   *  - prescriptionUnitsDB : "allowedConcentrationUnits" -> tableau (reconverti depuis le texte "a, b")
+   *  - therapiesDB : génère un "id" stable si la colonne est absente/vide (canevas sans id = OK)
+   */
+  function normalizeImportedData(targetKey, rawArray) {
+    if (!Array.isArray(rawArray)) return rawArray;
+
+    const toArray = (value, delimiter) => {
+      if (Array.isArray(value)) return value;
+      if (value === undefined || value === null || String(value).trim() === '') return [];
+      return String(value).split(delimiter).map(s => s.trim()).filter(s => s !== '');
+    };
+
+    if (targetKey === 'proceduresDB') {
+      return rawArray.map(row => ({
+        ...row,
+        materials: toArray(row.materials, '\n'),
+        steps: toArray(row.steps, '\n')
+      }));
+    }
+
+    if (targetKey === 'prescriptionUnitsDB') {
+      return rawArray.map(row => ({
+        ...row,
+        allowedConcentrationUnits: toArray(row.allowedConcentrationUnits, ',')
+      }));
+    }
+
+    if (targetKey === 'therapiesDB') {
+      const usedIds = new Set(rawArray.map(r => r.id).filter(v => v !== undefined && v !== null && String(v).trim() !== ''));
+      let counter = 1;
+      return rawArray.map(row => {
+        if (row.id !== undefined && row.id !== null && String(row.id).trim() !== '') return row;
+        let candidate;
+        do { candidate = `TH_AUTO_${String(counter).padStart(3, '0')}`; counter++; } while (usedIds.has(candidate));
+        usedIds.add(candidate);
+        return { ...row, id: candidate };
+      });
+    }
+
+    return rawArray;
   }
 
   function handleFileImport(e) {
@@ -10670,7 +10729,7 @@
       reader.onload = (event) => {
         try {
           const parsed = JSON.parse(event.target.result);
-          const dataToSave = parsed[targetKey] || parsed;
+          const dataToSave = normalizeImportedData(targetKey, parsed[targetKey] || parsed);
           saveActiveData(targetKey, dataToSave);
           alert(`Base ${targetKey} mise à jour avec succès !`);
         } catch (err) { alert("Erreur lors de la lecture du JSON."); }
@@ -10682,7 +10741,7 @@
           const data = new Uint8Array(event.target.result);
           const workbook = XLSX.read(data, { type: 'array' });
           const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
-          const jsonData = XLSX.utils.sheet_to_json(firstSheet);
+          const jsonData = normalizeImportedData(targetKey, XLSX.utils.sheet_to_json(firstSheet));
           saveActiveData(targetKey, jsonData);
           alert(`Base ${targetKey} mise à jour depuis Excel avec succès !`);
         } catch (err) { alert("Erreur lors de la lecture du fichier Excel."); }
