@@ -1,6 +1,4 @@
-================================
-    VERSION VAL DU 08 AOUT 2026                           
-================================
+//===========================  VERSION LIGHT POUR VAL  =============================//
 
 <!DOCTYPE html>
 <html lang="fr">
@@ -36,11 +34,6 @@
     .header-title { font-size: 1.5rem; margin: 0 0 10px 0; font-weight: 700; display: flex; align-items: center; gap: 10px; }
     .nav-tabs { display: flex; gap: 5px; overflow-x: auto; }
     .tab-btn { background-color: rgba(255,255,255,0.1); color: #ecf0f1; border: none; padding: 10px 20px; cursor: pointer; border-radius: 6px 6px 0 0; font-size: 0.95rem; font-weight: 600; transition: background 0.2s; }
-
-    /* Onglet(s) réservés à l'affichage desktop : masqués sur smartphone (Android/iOS), quelle que soit l'orientation */
-    @media (max-width: 768px) {
-      .desktop-only-tab { display: none !important; }
-    }
     .tab-btn:hover { background-color: rgba(255,255,255,0.2); }
     .tab-btn.active { background-color: var(--bg); color: var(--primary); }
 
@@ -138,7 +131,7 @@
     <button class="tab-btn" onclick="switchTab('tab-backend')">🗄️ Gestion des données</button>
     <button class="tab-btn" onclick="switchTab('tab-generator')">🖨️ GENERATORapp</button>
     <button class="tab-btn" onclick="switchTab('tab-docs')">📖 Mode d'emploi</button>
-    <button class="tab-btn desktop-only-tab" onclick="switchTab('tab-audit')">🔍 Audit & Logs</button>
+    <button class="tab-btn" onclick="switchTab('tab-audit')">🔍 Audit & Logs</button>
   </div>
 </header>
 
@@ -378,7 +371,7 @@
   <!-- ==================================================================== -->
   <div id="tab-backend" class="tab-content">
     <div class="card">
-      <h2 class="card-title">⚙️ Gestion des Bases de Données</h2>
+      <h2 class="card-title">⚙️ Administration des Bases de Données</h2>
       <p style="font-size: 0.9rem; color: #555;">
         Importez un fichier complet (XLSX ou JSON) pour remplacer la base courante. Les données importées sont enregistrées localement dans le navigateur.
       </p>
@@ -413,7 +406,7 @@
       </div>
 
       <!-- Visualisation des Tables -->
-      <h3 class="card-title">📊 Bases de Données Actives</h3>
+      <h3 class="card-title">📊 Aperçu des Données Actives</h3>
       
       <h4>1. Thérapies</h4>
       <div class="table-responsive"><table id="tableTherapies"><thead></thead><tbody></tbody></table></div>
@@ -421,10 +414,10 @@
       <h4 style="margin-top: 20px;">2. Procédures & Matériel</h4>
       <div class="table-responsive"><table id="tableProcedures"><thead></thead><tbody></tbody></table></div>
 
-      <h4 style="margin-top: 20px;">3. Solutés / Diluants</h4>
+      <h4 style="margin-top: 20px;">3. Solutés Diluants</h4>
       <div class="table-responsive"><table id="tableDiluents"><thead></thead><tbody></tbody></table></div>
 
-      <h4 style="margin-top: 20px;">4. Unités de prescription & unités de concentration associées</h4>
+      <h4 style="margin-top: 20px;">4. Compatibilité Unités</h4>
       <div class="table-responsive"><table id="tableUnits"><thead></thead><tbody></tbody></table></div>
     </div>
   </div>
@@ -435,16 +428,17 @@
   <div id="tab-generator" class="tab-content">
     <div class="card">
       <h2 class="card-title">🖨️ GENERATORapp</h2>
-      <h3>À propos</h3>
-      <p style="line-height: 1.6;">
-        GENERATORapp permet de générer des fiches de préparation pré-remplies avec les données minimales des thérapies mais vierges de toute donnée patient et de calcul mais facilitant le remplissage manuel. <br>
-      </p>
+      <h3>About</h3>
+      <p style="line-height: 1.6;">GENERATORapp est le mode dégradé papier.</p>
     </div>
 
     <div class="card">
       <h3 class="card-title">📋 Génération de fiches vierges</h3>
       <p style="font-size: 0.9rem; color: #555;">
-        Sélectionnez une plage de thérapies pour générer les fiches correspondantes. La base de données "Thérapies" de l'onglet "Gestion des thérapies" permet d'identifier la position d'une thérapie spécifique.
+        Sélectionnez une plage de thérapies (selon leur position dans la base <code>therapiesDB</code>) pour générer,
+        pour chacune d'elles, une fiche de préparation pré-remplie (vierge, à compléter manuellement) au format PDF —
+        structure identique à la fiche de production, avec en-tête, tableau "Données & Calculs", liste du matériel,
+        étapes de préparation, contrôles & visas et étiquettes.
       </p>
       <div class="grid">
         <div class="field">
@@ -498,11 +492,7 @@
         <li>L'outil "Importer et remplacer une base" permet de sélectionner la base à remplacer et d'importer un fichier structuré. Les bases importées sont stockées localement dans le navigateur et seront utilisées par l'application jusqu'à ce qu'elles soient remplacées ou réinitialisées. UN IMPORT DE FICHIER NE REMPLACE PAS LES DONNÉES DANS LE CODE DU FICHIER (le même fichier copié et installé sur un autre ordinateur s'ouvrira avec ses bases de données initiales).</li>
       </ul>
 
-      <h3>5. Utiliser GENERATOR</h3>
-      <ul style="line-height: 1.6;">
-        <li>Ce volet permet de générer des fiches de production pré-remplies facilitant la saisie manuelles des calculs, des vérifications, et de la validation des données. Ces fiches forment le mode dégardier "papier" de la production des chimiothérapies.</ul>
-
-      <h3>6. Glossaire</h3>
+      <h3>5. Glossaire</h3>
       <ul style="line-height: 1.6;">
         <li>"Dispositif" (ou Dispositif d'administration): Contenant final dans lequel le produit sera préparé (poche, seringue, flacon, etc.)</li>
         <li>"Type de remplissage" : Méthode de remplissage du dispositif.AD (jusqu'à un volume défini), POUR (volume de produit ajouté au volume du dispositif), BOLUS (sans ajout de soluté de dilution, "pur").</li>
@@ -513,13 +503,14 @@
   <!-- ==================================================================== -->
   <!-- TAB 4 : AUDIT & LOGS                                                 -->
   <!-- ==================================================================== -->
-  <div id="tab-audit" class="tab-content desktop-only-tab"> <!-- ce tab est uniquement visible sur les écrans de bureau, pas sur mobile -->
+  <div id="tab-audit" class="tab-content">
     <div class="card">
       <h2 class="card-title">🔍 Journal d'Audit & Traçabilité</h2>
       <p style="font-size: 0.9rem; color: #555;">
         Historique local de toutes les validations et fiches de préparations générées sur ce poste.
       </p>
-      <div style="margin-bottom: 15px;">
+      <div style="margin-bottom: 15px; display: flex; gap: 10px; flex-wrap: wrap;">
+        <button class="btn btn-primary" onclick="exportAuditLogsToExcel()">📊 Exporter en Excel (.xlsx)</button>
         <button class="btn btn-danger" onclick="clearAuditLogs()">🗑️ Effacer l'historique des logs</button>
       </div>
       <div class="table-responsive">
@@ -9941,6 +9932,53 @@
     y = drawTable(y, recapRows, [55, 135]);
 
     doc.save(`${prepId}_Fiche_Preparation.pdf`);
+
+    // Données complètes du récapitulatif, retournées pour alimenter le journal d'audit
+    // (mêmes valeurs que celles imprimées dans le PDF, pour garantir la cohérence).
+    return {
+      timestamp: nowStr,
+      prepId,
+      service: safe(p.service),
+      ipp: safe(p.ipp),
+      patientLastName: safe(p.lastName),
+      patientFirstName: safe(p.firstName),
+      patientFullName: patientDisplayName,
+      gender: safe(p.gender),
+      birthDate: fmtDateISO(p.birthDate),
+      heightCm: p.heightCm != null ? p.heightCm : '',
+      weightKg: p.weightKg != null ? p.weightKg : '',
+      bsa: p.bsa != null ? p.bsa : '',
+      therapyId: safe(therapyId),
+      drug: drugName,
+      therapyLabel: document.getElementById('rxTherapy').options[document.getElementById('rxTherapy').selectedIndex]?.text || '',
+      route,
+      cycle: safe(cycleVal),
+      day: safe(dayVal),
+      posology: posologyVal != null ? posologyVal : '',
+      posologyUnit,
+      posologyComplete,
+      coefficient: rx.coefficient != null ? rx.coefficient : 1,
+      calculatedDose: rx.calculatedDose != null ? rx.calculatedDose : '',
+      prescribedDose: prescribedDose != null ? prescribedDose : '',
+      doseUnit,
+      relativeDeviation: rx.relativeDeviation != null ? rx.relativeDeviation : '',
+      article: articleValue,
+      vials: prep.vials != null ? prep.vials : '',
+      reconstitution: reconstitutionDisplay,
+      device: deviceName,
+      deviceVolume: deviceVol,
+      diluent: diluentName,
+      volumeDansText: volumeDiluantText,
+      filling,
+      volumeToWithdraw: volPA != null ? volPA : '',
+      finalVolume: finalVol != null ? finalVol : '',
+      finalConc: prep.finalConc != null ? prep.finalConc : '',
+      conservation: conservationValue,
+      keyProcedure,
+      status: val.isValidated ? 'VALIDE' : 'NON VALIDE',
+      validatorName: safe(val.validatorName),
+      validatorComments: safe(val.validatorComments)
+    };
   }
 
   // ============================================================================
@@ -10450,19 +10488,30 @@
   // ============================================================================
   // 5. AUDIT LOGS & UI REFRESH
   // ============================================================================
-  function saveAuditLog() {
+  function saveAuditLog(pdfData) {
     const logs = JSON.parse(localStorage.getItem('catacyto_audit_logs')) || [];
-    const logEntry = {
+    // pdfData provient du retour de generatePreparationPdf() : toutes les données du récapitulatif.
+    // En repli (ex: appel isolé), on reconstruit un minimum depuis appState/DOM.
+    const logEntry = pdfData ? { ...pdfData } : {
       timestamp: new Date().toLocaleString('fr-CH'),
       prepId: `PREP-${Date.now().toString().slice(-6)}`,
-      patientName: `${appState.patient.lastName} ${appState.patient.firstName}`,
+      patientFullName: `${appState.patient.lastName} ${appState.patient.firstName}`,
       ipp: appState.patient.ipp,
-      therapy: document.getElementById('rxTherapy').options[document.getElementById('rxTherapy').selectedIndex]?.text || '',
-      dose: `${appState.prescription.prescribedDose} ${appState.prescription.doseUnit}`,
-      deviation: appState.prescription.relativeDeviation,
+      therapyLabel: document.getElementById('rxTherapy').options[document.getElementById('rxTherapy').selectedIndex]?.text || '',
+      prescribedDose: appState.prescription.prescribedDose,
+      doseUnit: appState.prescription.doseUnit,
+      relativeDeviation: appState.prescription.relativeDeviation,
       status: appState.validation.isValidated ? 'VALIDE' : 'NON VALIDE',
-      validator: appState.validation.validatorName
+      validatorName: appState.validation.validatorName
     };
+    // Champs conservés pour compatibilité avec d'anciens logs déjà enregistrés localement
+    logEntry.patientName = logEntry.patientFullName;
+    logEntry.therapy = logEntry.therapyLabel;
+    logEntry.dose = logEntry.prescribedDose !== '' && logEntry.prescribedDose != null
+      ? `${logEntry.prescribedDose} ${logEntry.doseUnit || ''}`.trim() : '';
+    logEntry.deviation = logEntry.relativeDeviation;
+    logEntry.validator = logEntry.validatorName;
+
     logs.unshift(logEntry);
     localStorage.setItem('catacyto_audit_logs', JSON.stringify(logs));
     renderAuditLogs();
@@ -10491,6 +10540,82 @@
       localStorage.removeItem('catacyto_audit_logs');
       renderAuditLogs();
     }
+  }
+
+  /**
+   * Exporte l'intégralité du journal d'audit (toutes les données disponibles,
+   * pas seulement les colonnes affichées à l'écran) au format Excel (.xlsx).
+   */
+  function exportAuditLogsToExcel() {
+    if (typeof XLSX === 'undefined') {
+      alert("Erreur : la librairie Excel (SheetJS) n'est pas chargée.");
+      return;
+    }
+    const logs = JSON.parse(localStorage.getItem('catacyto_audit_logs')) || [];
+    if (!logs.length) {
+      alert("Aucun log à exporter.");
+      return;
+    }
+
+    // Colonnes exportées : [clé dans logEntry, libellé de la colonne Excel]
+    const columns = [
+      ['timestamp', 'Date / Heure'],
+      ['prepId', 'ID Préparation'],
+      ['status', 'Statut'],
+      ['validatorName', 'Valideur'],
+      ['validatorComments', 'Remarque du valideur'],
+      ['service', 'Service'],
+      ['ipp', 'IPP Patient'],
+      ['patientLastName', 'Nom'],
+      ['patientFirstName', 'Prénom'],
+      ['gender', 'Genre'],
+      ['birthDate', 'Date de naissance'],
+      ['heightCm', 'Taille (cm)'],
+      ['weightKg', 'Poids (kg)'],
+      ['bsa', 'Surface corp. (m²)'],
+      ['therapyId', 'ID Thérapie'],
+      ['drug', 'Substance (DCI)'],
+      ['therapyLabel', 'Thérapie (libellé complet)'],
+      ['route', "Voie d'administration"],
+      ['cycle', 'Cycle'],
+      ['day', 'Jour'],
+      ['posology', 'Posologie'],
+      ['posologyUnit', 'Unité posologie'],
+      ['posologyComplete', 'Posologie complète'],
+      ['coefficient', 'Coefficient'],
+      ['calculatedDose', 'Dose calculée'],
+      ['prescribedDose', 'Dose prescrite'],
+      ['doseUnit', 'Unité dose'],
+      ['relativeDeviation', 'Écart relatif (%)'],
+      ['article', 'Article'],
+      ['vials', 'Nombre de flacons'],
+      ['reconstitution', 'Reconstitution'],
+      ['device', "Dispositif d'administration"],
+      ['deviceVolume', 'Volume dispositif'],
+      ['diluent', 'Diluant'],
+      ['volumeDansText', 'Dans (détail)'],
+      ['filling', 'Type de remplissage'],
+      ['volumeToWithdraw', 'Volume à prélever (mL)'],
+      ['finalVolume', 'Volume final (mL)'],
+      ['finalConc', 'Concentration finale'],
+      ['conservation', 'Conservation'],
+      ['keyProcedure', 'Code procédure']
+    ];
+
+    const headerRow = columns.map(c => c[1]);
+    const dataRows = logs.map(l => columns.map(([key]) => {
+      const v = l[key];
+      return (v === undefined || v === null) ? '' : v;
+    }));
+
+    const ws = XLSX.utils.aoa_to_sheet([headerRow, ...dataRows]);
+    ws['!cols'] = columns.map(([, label]) => ({ wch: Math.max(label.length + 2, 14) }));
+
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Audit Logs');
+
+    const dateStr = new Date().toISOString().slice(0, 10);
+    XLSX.writeFile(wb, `CATACYTOapp_Audit_Logs_${dateStr}.xlsx`);
   }
 
   // ============================================================================
@@ -10712,8 +10837,8 @@
     });
 
     document.getElementById('exportBtn').addEventListener('click', () => {
-      generatePreparationPdf();
-      saveAuditLog();
+      const pdfData = generatePreparationPdf();
+      saveAuditLog(pdfData);
       alert("✅ Préparation exportée en PDF et enregistrée dans le journal d'audit !");
     });
 
