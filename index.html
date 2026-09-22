@@ -5,7 +5,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CATACYTOapp - Calculateur & Validation de Chimiothérapie</title>
+  <title>CYTOsecours - Calculateur & Validation de Chimiothérapie</title>
   
   <!-- CDN Librairies tierces (SheetJS pour Excel, jsPDF & html2canvas pour PDF) -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
@@ -125,9 +125,9 @@
 <body>
 
 <header>
-  <div class="header-title">🧪CATACYTO <span style="font-size: 0.9rem; font-weight: normal; opacity: 0.8;">v2026.1 - Préparation des chimiothérapies en mode dégradé -</span></div>
+  <div class="header-title">🧪CYTOsecours <span style="font-size: 0.9rem; font-weight: normal; opacity: 0.8;">v2026.1 - Préparation des chimiothérapies en mode dégradé -</span></div>
   <div class="nav-tabs">
-    <button class="tab-btn active" onclick="switchTab('tab-frontend')">🧪 CATACYTOapp</button>
+    <button class="tab-btn active" onclick="switchTab('tab-frontend')">🧪 CYTOsecours</button>
     <button class="tab-btn" onclick="switchTab('tab-backend')">🗄️ Gestion des données</button>
     <button class="tab-btn" onclick="switchTab('tab-generator')">🖨️ GENERATORapp</button>
     <button class="tab-btn" onclick="switchTab('tab-docs')">📖 Mode d'emploi</button>
@@ -464,20 +464,20 @@
       
       <h3>1. Présentation</h3>
       <div style="line-height: 1.6;">
-        CATACYTO est un outil fonctionnant localement (hors réseau internet) destiné aux pharmaciens spécialistes en production des chimiothérapies, comme outil d'assistance en cas de défaut du logiciel standard d'aide à la préparation (p.ex CATO). 
+        CYTOsecours est un outil fonctionnant localement (hors réseau internet) destiné aux pharmaciens spécialistes en production des chimiothérapies, comme outil d'assistance en cas de défaut du logiciel standard d'aide à la préparation (p.ex CATO). 
         Il permet d'automatiser les calculs de doses, les volumes à préparer, et d'importer des constantes comme les étapes de préparation et enfin d'exporter ces données sous forme de fiches de préparation structurées compréhensibles par des pharmaciens et des préparateurs. 
         La validation des données finales reste sous la responsabilité du pharmacien valideur, qui doit vérifier la cohérence des données avant de générer la fiche finale.
       </div>
 
       <h3>2. Bases de données & dépendances entre elles</h3>
       <ul style="line-height: 1.6;">
-        <li>CATACYTO possède 4 bases de données : une pour les thérapies, une pour les procédures et le matériel, une pour les diluants, et une pour les unités de prescription.</li>
+        <li>CYTOsecours possède 4 bases de données : une pour les thérapies, une pour les procédures et le matériel, une pour les diluants, et une pour les unités de prescription.</li>
         <li>Les bases des thérapies et des procédures sont reliées entre elles par une clé constituée par le dispositif d'administration, si une reconstitution est nécessaire (True/False) et le type de remplissage (AD, POUR, BOLUS). Exemple de clé : "Poche remplieTrueAD".</li>
         <li>Ainsi toute thérapie présente dans la base de données doit générer une clé valide et reconnue par la base de données des procédures.</li>
         <li>Toutes les thérapies partageant la même clé ont la même procédure et le même matériel associé.</li>
       </ul>
 
-      <h3>3. Utiliser CATACYTOapp</h3>
+      <h3>3. Utiliser CYTOsecours</h3>
       <ol style="line-height: 1.6;">
         <li>Remplir la section "Patient". Les données de poids (en kg) et de taille (en cm) sont obligatoires pour calculer la surface corporelle (Mosteller).</li>
         <li>Remplir la partie prescription en renseignant tous les champs. Le coefficient (par défaut = 1.0) permet d'ajuster la dose calculée lorsque le prescripteur a par exemple indiqué "90% de la dose" (dans ce cas le coefficient = 0.9). NB : si "AUC" est sélectionné comme unités de prescription, alors une fenêtre dédiée au calcul de la dose en mg selon AUC Calvert s'ouvre. La valeur calculée en mg sera alors importée dans le champ "dose calculée".</li>
@@ -9026,24 +9026,24 @@
   };
 
   function loadActiveData() {
-    therapiesDB = JSON.parse(localStorage.getItem('catacyto_therapiesDB')) || nativeTherapiesDB;
-    proceduresDB = JSON.parse(localStorage.getItem('catacyto_proceduresDB')) || nativeProceduresDB;
-    diluentsDB = JSON.parse(localStorage.getItem('catacyto_diluentsDB')) || nativeDiluentsDB;
-    prescriptionUnitsDB = JSON.parse(localStorage.getItem('catacyto_prescriptionUnitsDB')) || nativePrescriptionUnitsDB;
+    therapiesDB = JSON.parse(localStorage.getItem('CYTOsecours_therapiesDB')) || nativeTherapiesDB;
+    proceduresDB = JSON.parse(localStorage.getItem('CYTOsecours_proceduresDB')) || nativeProceduresDB;
+    diluentsDB = JSON.parse(localStorage.getItem('CYTOsecours_diluentsDB')) || nativeDiluentsDB;
+    prescriptionUnitsDB = JSON.parse(localStorage.getItem('CYTOsecours_prescriptionUnitsDB')) || nativePrescriptionUnitsDB;
   }
 
   function saveActiveData(key, data) {
-    localStorage.setItem(`catacyto_${key}`, JSON.stringify(data));
+    localStorage.setItem(`CYTOsecours_${key}`, JSON.stringify(data));
     loadActiveData();
     refreshAllUI();
   }
 
   function resetToNativeData() {
     if (confirm("Voulez-vous vraiment réinitialiser toutes les bases aux données natives ?")) {
-      localStorage.removeItem('catacyto_therapiesDB');
-      localStorage.removeItem('catacyto_proceduresDB');
-      localStorage.removeItem('catacyto_diluentsDB');
-      localStorage.removeItem('catacyto_prescriptionUnitsDB');
+      localStorage.removeItem('CYTOsecours_therapiesDB');
+      localStorage.removeItem('CYTOsecours_proceduresDB');
+      localStorage.removeItem('CYTOsecours_diluentsDB');
+      localStorage.removeItem('CYTOsecours_prescriptionUnitsDB');
       loadActiveData();
       refreshAllUI();
       alert("Données réinitialisées avec succès !");
@@ -10489,7 +10489,7 @@
   // 5. AUDIT LOGS & UI REFRESH
   // ============================================================================
   function saveAuditLog(pdfData) {
-    const logs = JSON.parse(localStorage.getItem('catacyto_audit_logs')) || [];
+    const logs = JSON.parse(localStorage.getItem('CYTOsecours_audit_logs')) || [];
     // pdfData provient du retour de generatePreparationPdf() : toutes les données du récapitulatif.
     // En repli (ex: appel isolé), on reconstruit un minimum depuis appState/DOM.
     const logEntry = pdfData ? { ...pdfData } : {
@@ -10513,12 +10513,12 @@
     logEntry.validator = logEntry.validatorName;
 
     logs.unshift(logEntry);
-    localStorage.setItem('catacyto_audit_logs', JSON.stringify(logs));
+    localStorage.setItem('CYTOsecours_audit_logs', JSON.stringify(logs));
     renderAuditLogs();
   }
 
   function renderAuditLogs() {
-    const logs = JSON.parse(localStorage.getItem('catacyto_audit_logs')) || [];
+    const logs = JSON.parse(localStorage.getItem('CYTOsecours_audit_logs')) || [];
     const tbody = document.querySelector('#tableLogs tbody');
     tbody.innerHTML = logs.map(l => `
       <tr>
@@ -10537,7 +10537,7 @@
 
   function clearAuditLogs() {
     if (confirm("Effacer tout l'historique des logs ?")) {
-      localStorage.removeItem('catacyto_audit_logs');
+      localStorage.removeItem('CYTOsecours_audit_logs');
       renderAuditLogs();
     }
   }
@@ -10551,7 +10551,7 @@
       alert("Erreur : la librairie Excel (SheetJS) n'est pas chargée.");
       return;
     }
-    const logs = JSON.parse(localStorage.getItem('catacyto_audit_logs')) || [];
+    const logs = JSON.parse(localStorage.getItem('CYTOsecours_audit_logs')) || [];
     if (!logs.length) {
       alert("Aucun log à exporter.");
       return;
@@ -10615,7 +10615,7 @@
     XLSX.utils.book_append_sheet(wb, ws, 'Audit Logs');
 
     const dateStr = new Date().toISOString().slice(0, 10);
-    XLSX.writeFile(wb, `CATACYTOapp_Audit_Logs_${dateStr}.xlsx`);
+    XLSX.writeFile(wb, `CYTOsecours_Audit_Logs_${dateStr}.xlsx`);
   }
 
   // ============================================================================
@@ -10648,7 +10648,7 @@
       const blob = new Blob([JSON.stringify(fullDB, null, 2)], { type: 'application/json' });
       const a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
-      a.download = `CATACYTO_Bases_Donnees_${new Date().toISOString().slice(0,10)}.json`;
+      a.download = `CYTOsecours_Bases_Donnees_${new Date().toISOString().slice(0,10)}.json`;
       a.click();
     } else if (format === 'xlsx') {
       // XLSX.utils.json_to_sheet() ne sérialise pas les valeurs de type tableau
@@ -10670,7 +10670,7 @@
       XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(proceduresForExport), 'proceduresDB');
       XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(diluentsDB), 'diluentsDB');
       XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(prescriptionUnitsForExport), 'prescriptionUnitsDB');
-      XLSX.writeFile(wb, `CATACYTO_Bases_Donnees_${new Date().toISOString().slice(0,10)}.xlsx`);
+      XLSX.writeFile(wb, `CYTOsecours_Bases_Donnees_${new Date().toISOString().slice(0,10)}.xlsx`);
     }
   }
 
