@@ -1,5 +1,8 @@
 ==========================    VERSION FULL POUR VAL 10 aout 2026     ============================
 
+<!-- V4 avec les correctifs de bugs suite tests intégration. Voir dossier des tests -->
+
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -176,11 +179,13 @@
         </div>
         <div class="field">
           <label for="pHeight">Taille (cm) * :</label>
-          <input type="number" id="pHeight" min="1" step="1" placeholder="ex: 175">
+          <input type="number" id="pHeight" min="1" step="1" placeholder="ex: 175" required>
+          <span id="pHeightError" class="sub-text" style="color: var(--danger);"></span>
         </div>
         <div class="field">
           <label for="pWeight">Poids (kg) * :</label>
-          <input type="number" id="pWeight" min="1" step="1" placeholder="ex: 70">
+          <input type="number" id="pWeight" min="1" step="1" placeholder="ex: 70" required>
+          <span id="pWeightError" class="sub-text" style="color: var(--danger);"></span>
         </div>
         <div class="field">
           <label for="pBsa">Surface Mosteller (m²) :</label>
@@ -787,7 +792,7 @@
     "storageTimeUnit": "jours",
     "protectFromLight": true,
     "validationNotes": null,
-    "preparationNotes": "utiliser des miniflacs de NaCl 0.9% de 100 ml",
+    "preparationNotes": null,
     "lastModifiedAt": "01.08.2026",
     "lastModifiedBy": "FAB9",
     "Status": "Validé"
@@ -8424,8 +8429,8 @@
     "pharmaFormulation": "Solution",
     "concentrationValue": 1.0,
     "concentrationUnit": "mg/ml",
-    "vialVolumeMl": 1.0,
-    "vialTotalDoseValue": 1.0,
+    "vialVolumeMl": 2.0,
+    "vialTotalDoseValue": 2.0,
     "vialTotalDoseUnit": "mg",
     "Reconstitution": false,
     "reconstitutionDiluent": null,
@@ -8444,8 +8449,8 @@
     "protectFromLight": true,
     "validationNotes": null,
     "preparationNotes": null,
-    "lastModifiedAt": "01.08.2026",
-    "lastModifiedBy": "FAB9",
+    "lastModifiedAt": "24.09.2026",
+    "lastModifiedBy": "GBAL",
     "Status": "Validé"
   },
   {
@@ -8457,8 +8462,8 @@
     "pharmaFormulation": "Solution",
     "concentrationValue": 1.0,
     "concentrationUnit": "mg/ml",
-    "vialVolumeMl": 1.0,
-    "vialTotalDoseValue": 1.0,
+    "vialVolumeMl": 2.0,
+    "vialTotalDoseValue": 2.0,
     "vialTotalDoseUnit": "mg",
     "Reconstitution": false,
     "reconstitutionDiluent": null,
@@ -8477,8 +8482,8 @@
     "protectFromLight": true,
     "validationNotes": null,
     "preparationNotes": null,
-    "lastModifiedAt": "01.08.2026",
-    "lastModifiedBy": "FAB9",
+    "lastModifiedAt": "24.09.2026",
+    "lastModifiedBy": "GBAL",
     "Status": "Validé"
   },
   {
@@ -8490,8 +8495,8 @@
     "pharmaFormulation": "Solution",
     "concentrationValue": 1.0,
     "concentrationUnit": "mg/ml",
-    "vialVolumeMl": 1.0,
-    "vialTotalDoseValue": 1.0,
+    "vialVolumeMl": 2.0,
+    "vialTotalDoseValue": 2.0,
     "vialTotalDoseUnit": "mg",
     "Reconstitution": false,
     "reconstitutionDiluent": null,
@@ -8510,8 +8515,8 @@
     "protectFromLight": true,
     "validationNotes": "Utiliser des poches de 50 mL auxquelles retirer 25 + x mL de soluté. Ou x = volume de la solution de prinicpe actif. Pour obtenir un volume total de 25 mL.",
     "preparationNotes": "Utiliser des poches de 50 mL auxquelles retirer 25 + x mL de soluté. Ou x = volume de la solution de prinicpe actif. Pour obtenir un volume total de 25 mL.",
-    "lastModifiedAt": "01.08.2026",
-    "lastModifiedBy": "FAB9",
+    "lastModifiedAt": "24.09.2026",
+    "lastModifiedBy": "GBAL",
     "Status": "Validé"
   },
   {
@@ -8543,8 +8548,8 @@
     "protectFromLight": true,
     "validationNotes": null,
     "preparationNotes": null,
-    "lastModifiedAt": "01.08.2026",
-    "lastModifiedBy": "FAB9",
+    "lastModifiedAt": "24.09.2026",
+    "lastModifiedBy": "GBAL",
     "Status": "Validé"
   },
   {
@@ -8631,7 +8636,7 @@
       "Ajouter le stabilisant dans la cassette",
       "Ajouter le volume de PA prescrit",
       "Compléter avec le diluant",
-      "Etiqueter la préparation"
+      "Etiqueter (étiquette vierge avec ID_Prep & Date & Visa)"
     ]
   },
   {
@@ -8646,7 +8651,7 @@
       "Injecter le diluant dans le difuseur, purger la tubulure, clamper et boucher avec un bouchon bleu.",
       "Prélever le volume de PA prescrit.",
       "Injecter dans le diffuseur.",
-      "Etiqueter la préparation"
+      "Etiqueter (étiquette vierge avec ID_Prep & Date & Visa)"
     ]
   },
   {
@@ -8662,7 +8667,7 @@
       "Injecter le diluant dans le diffuseur, purger la tubulure, clamper et boucher avec un bouchon bleu",
       "Prélever le volume de PA prescrit",
       "Injecter dans le diffuseur",
-      "Etiqueter la préparation"
+      "Etiqueter (étiquette vierge avec ID_Prep & Date & Visa)"
     ]
   },
   {
@@ -8678,7 +8683,7 @@
       "Retirer/ajouter le diluant",
       "Prélever le volume de PA prescrit",
       "Injecter dans la poche et mélanger délicatement",
-      "Etiqueter la préparation"
+      "Etiqueter (étiquette vierge avec ID_Prep & Date & Visa)"
     ]
   },
   {
@@ -8693,7 +8698,7 @@
       "Purger la tubulure, clamper et boucher avec un bouchon bleu",
       "Prélever le volume de PA prescrit",
       "Injecter dans la poche et mélanger délicatement",
-      "Etiqueter la préparation"
+      "Etiqueter (étiquette vierge avec ID_Prep & Date & Visa)"
     ]
   },
   {
@@ -8710,7 +8715,7 @@
       "Retirer/ajouter le diluant",
       "Prélever le volume de PA prescrit",
       "Injecter dans la poche et mélanger délicatement",
-      "Etiqueter la préparation"
+      "Etiqueter (étiquette vierge avec ID_Prep & Date & Visa)"
     ]
   },
   {
@@ -8726,7 +8731,7 @@
       "Purger la tubulure, clamper et boucher avec un bouchon bleu",
       "Prélever le volume de PA prescrit",
       "Injecter dans la poche et mélanger délicatement",
-      "Etiqueter la préparation"
+      "Etiqueter (étiquette vierge avec ID_Prep & Date & Visa)"
     ]
   },
   {
@@ -8743,7 +8748,7 @@
       "Ajouter le stabilisant dans la cassette",
       "Ajouter le volume de PA prescrit",
       "Compléter avec le diluant",
-      "Etiqueter la préparation"
+      "Etiqueter (étiquette vierge avec ID_Prep & Date & Visa)"
     ]
   },
   {
@@ -8775,7 +8780,7 @@
       "Purger la tubulure, clamper et boucher avec un bouchon bleu",
       "Prélever le volume de PA prescrit",
       "Injecter dans la poche et mélanger délicatement",
-      "Etiqueter la préparation"
+      "Etiqueter (étiquette vierge avec ID_Prep & Date & Visa)"
     ]
   },
   {
@@ -8792,7 +8797,7 @@
       "Ajouter le diluant",
       "Prélever le volume de PA prescrit",
       "Injecter dans la poche et mélanger délicatement",
-      "Etiqueter la préparation"
+      "Etiqueter (étiquette vierge avec ID_Prep & Date & Visa)"
     ]
   },
   {
@@ -8808,7 +8813,7 @@
       "Purger la tubulure, clamper et boucher avec un bouchon bleu",
       "Prélever le volume de PA prescrit",
       "Injecter dans la poche et mélanger délicatement",
-      "Etiqueter la préparation"
+      "Etiqueter (étiquette vierge avec ID_Prep & Date & Visa)"
     ]
   },
   {
@@ -8823,7 +8828,7 @@
       "Prélever le volume de diluant indiqué",
       "Compléter la seringue avec le PA jusqu'au volume prescrit",
       "Mettre un bouchon bleu sur la seringue",
-      "Etiqueter la préparation"
+      "Etiqueter (étiquette vierge avec ID_Prep & Date & Visa)"
     ]
   },
   {
@@ -8835,7 +8840,7 @@
     "steps": [
       "Prélever le volume prescrit de PA prescrit",
       "Mettre un bouchon bleu sur la seringue",
-      "Etiqueter la préparation"
+      "Etiqueter (étiquette vierge avec ID_Prep & Date & Visa)"
     ]
   },
   {
@@ -8851,7 +8856,7 @@
       "Prélever le volume de diluant indiqué",
       "Compléter la seringue avec le PA jusqu'au volume prescrit",
       "Mettre un bouchon bleu sur la seringue",
-      "Etiqueter la préparation"
+      "Etiqueter (étiquette vierge avec ID_Prep & Date & Visa)"
     ]
   },
   {
@@ -8864,7 +8869,7 @@
       "Reconstituer le flacon de PA avec le solvant et le volume indiqué",
       "Prélever le volume de PA prescrit",
       "Mettre un bouchon bleu sur la seringue",
-      "Etiqueter la préparation"
+      "Etiqueter (étiquette vierge avec ID_Prep & Date & Visa)"
     ]
   },
   {
@@ -8888,7 +8893,7 @@
     "steps": [
       "Prélever le volume prescrit de PA prescrit",
       "Mettre un bouchon bleu sur la seringue",
-      "Etiqueter la préparation"
+      "Etiqueter (étiquette vierge avec ID_Prep & Date & Visa)"
     ]
   },
   {
@@ -8905,7 +8910,7 @@
       "Prélever le volume prescrit de PA prescrit",
       "Compléter la seringue avec le bon solvant jusqu'au volume prescrit",
       "Mettre un bouchon bleu sur la tubulure ainsi qu'une valve anti reflux",
-      "Etiqueter la préparation"
+      "Etiqueter (étiquette vierge avec ID_Prep & Date & Visa)"
     ]
   },
   {
@@ -8917,7 +8922,7 @@
     "steps": [
       "Prélever le volume prescrit de PA prescrit",
       "Mettre un bouchon bleu sur la seringue",
-      "Etiqueter la préparation"
+      "Etiqueter (étiquette vierge avec ID_Prep & Date & Visa)"
     ]
   },
   {
@@ -8935,7 +8940,7 @@
       "Prélever le volume prescrit de PA prescrit",
       "Compléter la seringue avec le bon solvant jusqu'au volume prescrit",
       "Mettre un bouchon bleu sur la tubulure ainsi qu'une valve anti reflux",
-      "Etiqueter la préparation"
+      "Etiqueter (étiquette vierge avec ID_Prep & Date & Visa)"
     ]
   },
   {
@@ -8948,7 +8953,7 @@
       "Reconstituer le flacon de PA avec le solvant et le volume indiqué",
       "Prélever le volume prescrit de PA prescrit",
       "Mettre un bouchon bleu sur la seringue",
-      "Etiqueter la préparation"
+      "Etiqueter (étiquette vierge avec ID_Prep & Date & Visa)"
     ]
   },
   {
@@ -8963,7 +8968,7 @@
       "Prélever le volume de diluant indiqué",
       "Compléter la seringue avec le PA jusqu'au volume prescrit",
       "Mettre un bouchon bleu adapté sur la seringue",
-      "Etiqueter la préparation"
+      "Etiqueter (étiquette vierge avec ID_Prep & Date & Visa)"
     ]
   },
   {
@@ -8979,7 +8984,7 @@
       "Prélever le volume de diluant indiqué",
       "Compléter la seringue avec le PA jusqu'au volume prescrit",
       "Mettre un bouchon bleu adapté sur la seringue",
-      "Etiqueter la préparation"
+      "Etiqueter (étiquette vierge avec ID_Prep & Date & Visa)"
     ]
   }
 ];
@@ -8991,7 +8996,7 @@
     { "name": "NaCl 0.9% FRIGO" },
     { "name": "Glucose 5%" },
     { "name": "Eau Pour Préparation Injectable (PPI)" },
-    { "name": "Sans diluant (pur)" },
+    { "name": "Sans dilution (pur)" },
     { "name": "Ringer Lactate" }
   ];
 
@@ -9020,16 +9025,18 @@
 
   const appState = {
     patient: { service: "", ipp: "", lastName: "", firstName: "", gender: "Homme", birthDate: "", heightCm: null, weightKg: null, bsa: null },
-    prescription: { selectedTherapyId: null, diluent: "", cycle: 1, day: 1, posology: null, posologyUnit: "", coefficient: 1.0, calculatedDose: null, prescribedDose: null, doseUnit: "", relativeDeviation: null },
-    preparation: { volumeToWithdraw: null, vials: null, finalVolumeMl: null, finalConc: null, inDiluent: "", keyProcedure: "" },
-    validation: { isValidated: false, validatorName: "", validatorComments: "" }
+    prescription: { selectedTherapyId: null, diluent: "", cycle: 1, day: 1, posology: null, posologyUnit: "", coefficient: 1.0, calculatedDose: null, prescribedDose: null, doseUnit: "", relativeDeviation: null, isValid: false },
+    preparation: null,
+    validation: { isValidated: false, validatorName: "", validatorComments: "" },
+    isCalculationValid: false
   };
 
+  // Bug 7 fix : copie défensive des bases natives pour ne jamais muter les tableaux de secours
   function loadActiveData() {
-    therapiesDB = JSON.parse(localStorage.getItem('CYTOsecours_therapiesDB')) || nativeTherapiesDB;
-    proceduresDB = JSON.parse(localStorage.getItem('CYTOsecours_proceduresDB')) || nativeProceduresDB;
-    diluentsDB = JSON.parse(localStorage.getItem('CYTOsecours_diluentsDB')) || nativeDiluentsDB;
-    prescriptionUnitsDB = JSON.parse(localStorage.getItem('CYTOsecours_prescriptionUnitsDB')) || nativePrescriptionUnitsDB;
+    therapiesDB = JSON.parse(localStorage.getItem('CYTOsecours_therapiesDB')) || JSON.parse(JSON.stringify(nativeTherapiesDB));
+    proceduresDB = JSON.parse(localStorage.getItem('CYTOsecours_proceduresDB')) || JSON.parse(JSON.stringify(nativeProceduresDB));
+    diluentsDB = JSON.parse(localStorage.getItem('CYTOsecours_diluentsDB')) || JSON.parse(JSON.stringify(nativeDiluentsDB));
+    prescriptionUnitsDB = JSON.parse(localStorage.getItem('CYTOsecours_prescriptionUnitsDB')) || JSON.parse(JSON.stringify(nativePrescriptionUnitsDB));
   }
 
   function saveActiveData(key, data) {
@@ -9054,9 +9061,10 @@
   // ============================================================================
   
   // A. Calcul Âge et Surface Corporelle (BSA - Mosteller)
+  // Bug 1 fix : valeur pleine précision, l'arrondi ne doit s'appliquer qu'à l'affichage
   function calculateBSA(heightCm, weightKg) {
     if (!heightCm || !weightKg || heightCm <= 0 || weightKg <= 0) return null;
-    return Number(Math.sqrt((heightCm * weightKg) / 3600).toFixed(2));
+    return Math.sqrt((heightCm * weightKg) / 3600);
   }
 
   function calculateAge(birthDateString) {
@@ -9076,13 +9084,26 @@
   // B. Recalcul Global Réactif
   function recalculateAll() {
     // 1. Mise à jour Patient
-    const heightCm = parseFloat(document.getElementById('pHeight').value) || null;
-    const weightKg = parseFloat(document.getElementById('pWeight').value) || null;
-    const birthDate = document.getElementById('pBirthDate').value;
+    const heightInput = document.getElementById('pHeight');
+    const weightInput = document.getElementById('pWeight');
+    const heightRaw = parseFloat(heightInput.value);
+    const weightRaw = parseFloat(weightInput.value);
+    // Bug 6 fix : taille et poids doivent être strictement positifs (0 ou négatif = valeur invalide, pas "non renseignée")
+    const heightCm = (!isNaN(heightRaw) && heightRaw > 0) ? heightRaw : null;
+    const weightKg = (!isNaN(weightRaw) && weightRaw > 0) ? weightRaw : null;
+    heightInput.style.borderColor = (heightInput.value !== '' && heightCm === null) ? 'var(--danger)' : '';
+    weightInput.style.borderColor = (weightInput.value !== '' && weightKg === null) ? 'var(--danger)' : '';
+    document.getElementById('pHeightError').textContent = heightCm !== null ? '' : (heightInput.value === '' ? 'Champ obligatoire' : 'Doit être un nombre positif');
+    document.getElementById('pWeightError').textContent = weightKg !== null ? '' : (weightInput.value === '' ? 'Champ obligatoire' : 'Doit être un nombre positif');
+    const birthDateInput = document.getElementById('pBirthDate');
+    const birthDate = birthDateInput.value;
+    // Bug 4 fix : une date de naissance future est invalide, ne pas la propager dans l'état ni le calcul d'âge
+    const isBirthDateFuture = !!birthDate && new Date(birthDate) > new Date();
+    birthDateInput.style.borderColor = isBirthDateFuture ? 'var(--danger)' : '';
     const bsa = calculateBSA(heightCm, weightKg);
     
-    document.getElementById('pAgeDisplay').textContent = `Âge : ${calculateAge(birthDate) || '--'}`;
-    document.getElementById('pBsa').value = bsa ? `${bsa} m²` : '';
+    document.getElementById('pAgeDisplay').textContent = isBirthDateFuture ? `Âge : Date invalide (future)` : `Âge : ${calculateAge(birthDate) || '--'}`;
+    document.getElementById('pBsa').value = bsa ? `${bsa.toFixed(2)} m²` : '';
     
     appState.patient = {
       service: document.getElementById('pService').value,
@@ -9090,26 +9111,31 @@
       lastName: document.getElementById('pLastName').value,
       firstName: document.getElementById('pFirstName').value,
       gender: document.getElementById('pGender').value,
-      birthDate, heightCm, weightKg, bsa
+      birthDate: isBirthDateFuture ? '' : birthDate, heightCm, weightKg, bsa
     };
 
     // 2. Calcul Dose Théorique
     const posology = parseFloat(document.getElementById('rxPosology').value) || 0;
-    const coeff = parseFloat(document.getElementById('rxCoeff').value) || 1.0;
+    const coeffInput = document.getElementById('rxCoeff');
+    const coeffRaw = coeffInput.value;
+    const coeffParsed = parseFloat(coeffRaw);
+    // Bug 1 fix : un coefficient à 0 est une valeur valide, distincte d'une saisie vide
+    const coeff = (coeffRaw !== '' && !isNaN(coeffParsed)) ? coeffParsed : 1.0;
+    // Bug 2 fix : le min="0.1" HTML n'est qu'indicatif, bloquer explicitement un coefficient négatif
+    const isCoeffValid = coeff >= 0;
+    coeffInput.style.borderColor = isCoeffValid ? '' : 'var(--danger)';
     const unitSelect = document.getElementById('rxPosologyUnit');
     const unitVal = unitSelect.value;
-
-    if (unitVal === "AUC") {
-      openAucCalculator();
-    }
+    // Bug 5 fix : dériver le type de dose (par kg / par m² / unitaire) et l'unité de base depuis le nom exact de l'unité plutôt que par sous-chaîne
+    const [unitNumerator, unitDenominator] = unitVal.split('/');
 
     let calculatedDose = null;
     let baseUnit = "mg";
 
-    if (posology > 0) {
-      if (unitVal.includes("kg")) {
+    if (posology > 0 && isCoeffValid) {
+      if (unitDenominator === "kg") {
         calculatedDose = posology * (weightKg || 0) * coeff;
-      } else if (unitVal.includes("m2") || unitVal.includes("m²")) {
+      } else if (unitDenominator === "m²" || unitDenominator === "m2") {
         calculatedDose = posology * (bsa || 0) * coeff;
       } else if (unitVal === "AUC") {
         const aucVal = parseFloat(document.getElementById('auc_dose_result').textContent);
@@ -9119,8 +9145,8 @@
       }
     }
 
-    if (unitVal.startsWith("mcg")) baseUnit = "mcg";
-    else if (unitVal.startsWith("UI")) baseUnit = "UI";
+    if (unitNumerator === "mcg") baseUnit = "mcg";
+    else if (unitNumerator === "UI") baseUnit = "UI";
 
     if (calculatedDose !== null) {
       calculatedDose = Number(calculatedDose.toFixed(2));
@@ -9143,18 +9169,32 @@
   // C. Écart Relatif & Préparation
   function updateDeviationAndPreparation() {
     const calcDose = appState.prescription.calculatedDose;
-    const prescribedDose = parseFloat(document.getElementById('rxPrescribedDose').value) || null;
+    const prescribedDoseRaw = document.getElementById('rxPrescribedDose').value;
+    const prescribedDoseParsed = parseFloat(prescribedDoseRaw);
+    // Bug 3 fix : une dose de 0 est une valeur renseignée, distincte d'une absence de saisie
+    const prescribedDose = (prescribedDoseRaw !== '' && !isNaN(prescribedDoseParsed)) ? prescribedDoseParsed : null;
     const badge = document.getElementById('rxDeviationDisplay');
 
-    if (!calcDose || !prescribedDose) {
+    // Bug 4 fix : seuil de déviation paramétrable par thérapie (repli à ±10 % si non défini en base)
+    const therapy = therapiesDB.find(t => t.id === document.getElementById('rxTherapy').value);
+    const hasCustomThreshold = therapy && therapy.deviationThresholdPercent !== null && therapy.deviationThresholdPercent !== undefined && therapy.deviationThresholdPercent !== '';
+    const deviationThreshold = hasCustomThreshold ? Math.abs(parseFloat(therapy.deviationThresholdPercent)) : 10;
+
+    if (calcDose === null || calcDose === undefined || prescribedDose === null || prescribedDose === undefined) {
       badge.textContent = '-- %';
       badge.className = 'badge';
       appState.prescription.prescribedDose = null;
       appState.prescription.relativeDeviation = null;
+    } else if (calcDose === 0) {
+      // Division par zéro évitée : une dose calculée nulle ne peut pas produire un écart relatif classique
+      badge.textContent = prescribedDose === 0 ? '0 %' : 'N/A';
+      badge.className = 'badge badge-danger';
+      appState.prescription.prescribedDose = prescribedDose;
+      appState.prescription.relativeDeviation = prescribedDose === 0 ? 0 : null;
     } else {
       const dev = Number((((prescribedDose - calcDose) / calcDose) * 100).toFixed(2));
       badge.textContent = `${dev > 0 ? '+' : ''}${dev} %`;
-      badge.className = (dev >= -10 && dev <= 10) ? 'badge badge-success' : 'badge badge-danger';
+      badge.className = (dev >= -deviationThreshold && dev <= deviationThreshold) ? 'badge badge-success' : 'badge badge-danger';
       appState.prescription.prescribedDose = prescribedDose;
       appState.prescription.relativeDeviation = dev;
     }
@@ -9166,7 +9206,6 @@
   function updatePreparationSection() {
     const therapyId = document.getElementById('rxTherapy').value;
     const prescribedDose = appState.prescription.prescribedDose;
-    const selectedDiluent = document.getElementById('rxDiluent').value;
     const therapy = therapiesDB.find(t => t.id === therapyId);
 
     if (!therapy) {
@@ -9174,13 +9213,31 @@
       return;
     }
 
+    // Bug fix : BOLUS = administration sans diluant ("pur"). Le champ Diluant doit
+    // automatiquement se positionner sur "Sans dilution (pur)" et être verrouillé
+    // (non modifiable) pour toute thérapie dont adminDeviceFillingProcedure = BOLUS.
+    // Pour les autres modes (AD, POUR...), le champ redevient libre.
+    const rxDiluentSelect = document.getElementById('rxDiluent');
+    const isBolus = (therapy.adminDeviceFillingProcedure || '').toUpperCase() === 'BOLUS';
+    const pureDiluentValue = 'Sans dilution (pur)';
+    if (isBolus) {
+      const hasPureOption = Array.from(rxDiluentSelect.options).some(o => o.value === pureDiluentValue);
+      if (hasPureOption) rxDiluentSelect.value = pureDiluentValue;
+      rxDiluentSelect.disabled = true;
+    } else {
+      rxDiluentSelect.disabled = false;
+    }
+    const selectedDiluent = rxDiluentSelect.value;
+
     // Contrôle Compatibilité Unité
     const unitMatch = prescriptionUnitsDB.find(u => u.prescribedUnit === appState.prescription.posologyUnit);
     if (unitMatch && !unitMatch.allowedConcentrationUnits.includes(therapy.concentrationUnit)) {
-      alert(`⚠️ Incompatibilité : L'unité prescrite (${appState.prescription.posologyUnit}) ne concorde pas avec l'unité du produit (${therapy.concentrationUnit}) !`);
+      alert(`⚠️ Incompatibilité : L'unité prescrite (${appState.prescription.posologyUnit}) ne concorde pas avec l'unité du produit (${therapy.concentrationUnit}) ! Calcul bloqué.`);
+      clearPreparationCalculatedFields();
+      return;
     }
 
-    document.getElementById('prepArticle').value = `${therapy.DrugDCI} ${therapy.concentrationValue} ${therapy.concentrationUnit} - ${therapy.vialVolumeMl} mL`;
+    document.getElementById('prepArticle').value = `${therapy.DrugDCI} ${therapy.concentrationValue} ${therapy.concentrationUnit} - ${therapy.vialVolumeMl} mL - (${therapy.vialTotalDoseValue} ${therapy.vialTotalDoseUnit})`;
     document.getElementById('prepDevice').value = `${therapy.administrationDevice} ${therapy.administrationDeviceVolumeValue} ${therapy.administrationDeviceVolumeUnit}`;
     document.getElementById('prepFillingProcedure').value = therapy.adminDeviceFillingProcedure;
 
@@ -9189,47 +9246,60 @@
     let vials = null;
 
     if (prescribedDose && prescribedDose > 0 && therapy.concentrationValue > 0) {
-      volumeToWithdraw = Number((prescribedDose / therapy.concentrationValue).toFixed(2));
+      // Bug 2 fix : conserver la pleine précision entre les étapes, n'arrondir qu'à l'affichage
+      const volumeToWithdrawRaw = prescribedDose / therapy.concentrationValue;
+      volumeToWithdraw = Number(volumeToWithdrawRaw.toFixed(2));
       document.getElementById('prepVolumeToWithdraw').value = `${volumeToWithdraw} mL`;
 
-      vials = Math.ceil(volumeToWithdraw / therapy.vialVolumeMl);
+      vials = Math.ceil(volumeToWithdrawRaw / therapy.vialVolumeMl);
       document.getElementById('prepVials').value = `${vials} flacon(s)`;
 
       let inDiluentText = "";
       const proc = therapy.adminDeviceFillingProcedure;
+      let finalVolRaw = null;
 
       if (proc === 'BOLUS') {
-        finalVol = volumeToWithdraw;
+        finalVolRaw = volumeToWithdrawRaw;
         inDiluentText = "Sans dilution, Bolus";
       } else if (proc === 'POUR') {
-        finalVol = Number((therapy.administrationDeviceVolumeValue + volumeToWithdraw).toFixed(2));
+        finalVolRaw = therapy.administrationDeviceVolumeValue + volumeToWithdrawRaw;
         inDiluentText = `${therapy.administrationDeviceVolumeValue} mL ${selectedDiluent}`;
       } else if (proc === 'AD') {
-        finalVol = therapy.finalVolumeMlifAD || therapy.administrationDeviceVolumeValue;
-        const diluentVol = Number((finalVol - volumeToWithdraw).toFixed(2));
-        inDiluentText = `${diluentVol} mL ${selectedDiluent}`;
+        finalVolRaw = therapy.finalVolumeMlifAD || therapy.administrationDeviceVolumeValue;
+        const diluentVolRaw = finalVolRaw - volumeToWithdrawRaw;
+        if (diluentVolRaw < 0) {
+          alert(`⚠️ Erreur : Volume à prélever (${volumeToWithdraw} mL) supérieur au volume final du dispositif (${Number(finalVolRaw.toFixed(2))} mL) !`);
+          clearPreparationCalculatedFields();
+          return;
+        }
+        inDiluentText = `${Number(diluentVolRaw.toFixed(2))} mL ${selectedDiluent}`;
       }
 
+      finalVol = Number(finalVolRaw.toFixed(2));
       document.getElementById('prepInDiluent').value = inDiluentText;
       document.getElementById('prepFinalVolume').value = `${finalVol} mL`;
 
-      const finalConc = Number((prescribedDose / finalVol).toFixed(2));
+      const finalConc = Number((prescribedDose / finalVolRaw).toFixed(2));
       document.getElementById('prepFinalConc').value = `${finalConc} ${therapy.concentrationUnit}`;
 
       // Bornes Cmin / Cmax
+      // Bug 3 fix : distinguer « pas de borne définie » (null/undefined/'') d'une borne valant légitimement 0
       const boundsBadge = document.getElementById('prepConcBoundsBadge');
-      if (!therapy.Cmin && !therapy.Cmax) {
+      const hasCmin = therapy.Cmin !== null && therapy.Cmin !== undefined && therapy.Cmin !== '';
+      const hasCmax = therapy.Cmax !== null && therapy.Cmax !== undefined && therapy.Cmax !== '';
+      if (!hasCmin && !hasCmax) {
         boundsBadge.textContent = "Bornes non spécifiées";
         boundsBadge.className = "badge badge-info";
       } else {
-        const cMin = parseFloat(therapy.Cmin) || 0;
-        const cMax = parseFloat(therapy.Cmax) || Infinity;
+        const cMin = hasCmin ? parseFloat(therapy.Cmin) : 0;
+        const cMax = hasCmax ? parseFloat(therapy.Cmax) : Infinity;
         const isOk = finalConc >= cMin && finalConc <= cMax;
         boundsBadge.textContent = `${finalConc} [${cMin} - ${cMax}]`;
         boundsBadge.className = isOk ? "badge badge-success" : "badge badge-danger";
       }
 
       appState.preparation = { volumeToWithdraw, vials, finalVolumeMl: finalVol, finalConc, inDiluent: inDiluentText, keyProcedure: "" };
+      setCalculationValidity(true);
     } else {
       clearPreparationCalculatedFields();
     }
@@ -9244,7 +9314,7 @@
     // Génération Clé Jointure KeyProcedure : Device + Reconstitution + FillingProcedure
     const keyProcedure = `${therapy.administrationDevice}${therapy.Reconstitution ? 'True' : 'False'}${therapy.adminDeviceFillingProcedure}`;
     document.getElementById('prepKeyProcedure').value = keyProcedure;
-    appState.preparation.keyProcedure = keyProcedure;
+    if (appState.preparation) appState.preparation.keyProcedure = keyProcedure;
 
     // Jointure dynamique Procédures
     updateProcedureContent(keyProcedure, therapy);
@@ -9257,6 +9327,9 @@
     document.getElementById('prepConcBoundsBadge').className = "badge";
     document.getElementById('accSteps').innerHTML = '<p class="sub-text">Sélectionnez une thérapie pour charger les étapes.</p>';
     document.getElementById('accMaterial').innerHTML = '<p class="sub-text">Sélectionnez une thérapie pour charger le matériel.</p>';
+    // Bug fix (BOLUS/Diluant) : aucune thérapie sélectionnée -> le champ Diluant redevient libre
+    document.getElementById('rxDiluent').disabled = false;
+    setCalculationValidity(false);
     updateValidationSummary(null);
   }
 
@@ -9264,6 +9337,23 @@
     ['prepVolumeToWithdraw', 'prepVials', 'prepInDiluent', 'prepFinalVolume', 'prepFinalConc'].forEach(id => document.getElementById(id).value = '--');
     document.getElementById('prepConcBoundsBadge').textContent = "--";
     document.getElementById('prepConcBoundsBadge').className = "badge";
+    setCalculationValidity(false);
+  }
+
+  // Bug 3/4 fix : état interne + activation export toujours synchronisés avec la validité du calcul
+  function setCalculationValidity(isValid) {
+    appState.preparation = isValid ? appState.preparation : null;
+    appState.prescription.isValid = isValid;
+    appState.isCalculationValid = isValid;
+    updateExportButtonState();
+  }
+
+  function updateExportButtonState() {
+    const validatorName = document.getElementById('validatorName').value.trim();
+    const isToggled = document.getElementById('validationStatusToggle').checked;
+    // Bug 6 fix : taille/poids patient obligatoires et positifs pour pouvoir exporter/valider
+    const hasValidPatientMeasurements = !!appState.patient.heightCm && !!appState.patient.weightKg;
+    document.getElementById('exportBtn').disabled = !validatorName || !isToggled || !appState.isCalculationValid || !hasValidPatientMeasurements;
   }
 
   function updateProcedureContent(keyProcedure, therapy) {
@@ -9325,7 +9415,7 @@
 
     const therapyId = document.getElementById('rxTherapy').value;
     const therapy = therapiesDB.find(t => t.id === therapyId) || {};
-    const prepId = `PREP-${Date.now().toString().slice(-6)}`;
+    const prepId = `PREP-${crypto.randomUUID().replace(/-/g, '').slice(0, 8).toUpperCase()}`;
 
     const safe = (v) => (v === null || v === undefined || v === '') ? '' : String(v);
     const fmtDateISO = (d) => {
@@ -9708,7 +9798,7 @@
     const validationText = `Statut : ${val.isValidated ? 'VALIDE' : 'NON VALIDE'}    Par : ${safe(val.validatorName)}    Le : ${nowStr}`;
     const infosRows = [
       { cells: [
-        { text: 'ID préparation :', bold: true }, { text: prepId },
+        { text: 'ID_PREP :', bold: true }, { text: prepId },
         { text: 'Service :', bold: true }, { text: safe(p.service) },
         { text: 'IPP patient :', bold: true }, { text: safe(p.ipp) }
       ] },
@@ -9729,14 +9819,15 @@
     const matRows = [
       { cells: [{ text: 'Article :', bold: true }, { text: articleValue }] },
       { cells: [{ text: 'Quantité :', bold: true }, { text: `${prep.vials != null ? prep.vials : ''}    Pce. — Lot & Exp. :` }] },
-      { cells: [{ text: 'Diluant :', bold: true }, { text: `${diluentName}    — Volume :_____ mL — Lot & Exp. :` }] },
-      { cells: [{ text: 'Matériel :', bold: true }, { text: materialsText }] }
+      { cells: [{ text: 'Diluant :', bold: true }, { text: `${diluentName}    — Qtité, Volume, Lot & Exp. :` }] },
+      { cells: [{ text: 'Matériel :', bold: true }, { text: materialsText }] },
+      { cells: [{ text: 'Contrôles :', bold: true }, { text: 'Préparé et photographié par ____________ Contrôlé par ____________' }] }
     ];
     y = drawTable(y, matRows, [30, 160]);
     y += 5;
 
     // --- Préparation ---
-    y = drawSectionTitle(y, 'Préparation');
+    y = drawSectionTitle(y, 'Préparation | Préparé par : ___________ | Isolateur N°_____ ');
     const volPAStr = volPA != null ? `${Number(volPA).toFixed(2)} mL` : '';
     const volFinalStr = finalVol != null ? `${Number(finalVol).toFixed(2)} mL` : '';
     const prepRows = [
@@ -9753,13 +9844,12 @@
     y = drawTable(y, prepRows, [55, 135]);
     y += 5;
 
-    // --- Contrôles & Visas ---
-    y = drawSectionTitle(y, 'Contrôles & Visas');
+    // --- Contrôles & Libération ---
+    y = drawSectionTitle(y, 'Contrôles & Libération');
     const ctrlRows = [
-      { cells: [{ text: 'Date & Isolateur :', bold: true }, { text: 'Produit le :' }, { text: 'Isolateur :' }] },
-      { cells: [{ text: 'Contrôles Préparateurs :', bold: true }, { text: 'Visa 1 :' }, { text: 'Visa 2 :' }] },
-      { cells: [{ text: 'Contrôles Pharmaciens :', bold: true }, { text: 'Visa 1 :' }, { text: 'Visa 2 :' }] },
-      { cells: [{ text: 'Statut :', bold: true }, { text: 'Libéré' }, { text: 'Non libéré' }] }
+      { cells: [{ text: 'Calculs & étapes :', bold: true }, { text: 'Visa 1 :' }, { text: 'Visa 2 :' }] },
+      { cells: [{ text: 'Contrôles visuels :', bold: true }, { text: 'Visa 1 :' }, { text: 'Visa 2 :' }] },
+      { cells: [{ text: 'Libéré / Non libéré', bold: true }, { text: 'Visa 1 :' }, { text: 'Visa 2 :' }] }
     ];
     y = drawTable(y, ctrlRows, [55, 67.5, 67.5]);
 
@@ -10520,7 +10610,12 @@
   function renderAuditLogs() {
     const logs = JSON.parse(localStorage.getItem('CYTOsecours_audit_logs')) || [];
     const tbody = document.querySelector('#tableLogs tbody');
-    tbody.innerHTML = logs.map(l => `
+    // Bug 5 fix : un écart absent (null/undefined) ne doit pas être affiché comme conforme
+    tbody.innerHTML = logs.map(l => {
+      const hasDeviation = l.deviation !== null && l.deviation !== undefined && l.deviation !== '';
+      const deviationClass = hasDeviation ? (l.deviation >= -10 && l.deviation <= 10 ? 'badge-success' : 'badge-danger') : 'badge-warning';
+      const deviationText = hasDeviation ? `${l.deviation}%` : '--';
+      return `
       <tr>
         <td>${l.timestamp}</td>
         <td><strong>${l.prepId}</strong></td>
@@ -10528,11 +10623,12 @@
         <td>${l.ipp}</td>
         <td>${l.therapy}</td>
         <td>${l.dose}</td>
-        <td><span class="badge ${l.deviation >= -10 && l.deviation <= 10 ? 'badge-success' : 'badge-danger'}">${l.deviation}%</span></td>
+        <td><span class="badge ${deviationClass}">${deviationText}</span></td>
         <td><strong>${l.status}</strong></td>
         <td>${l.validator}</td>
       </tr>
-    `).join('');
+    `;
+    }).join('');
   }
 
   function clearAuditLogs() {
@@ -10635,10 +10731,11 @@
       table.querySelector('tbody').innerHTML = '<tr><td>Aucune donnée</td></tr>';
       return;
     }
-    const headers = Object.keys(data[0]);
+    // Bug 6 fix : union des clés de toutes les lignes, pas seulement la première (données hétérogènes)
+    const headers = [...new Set(data.flatMap(row => Object.keys(row)))];
     table.querySelector('thead').innerHTML = '<tr>' + headers.map(h => `<th>${h}</th>`).join('') + '</tr>';
     table.querySelector('tbody').innerHTML = data.map(row => 
-      '<tr>' + headers.map(h => `<td>${typeof row[h] === 'object' ? JSON.stringify(row[h]) : row[h]}</td>`).join('') + '</tr>'
+      '<tr>' + headers.map(h => `<td>${typeof row[h] === 'object' && row[h] !== null ? JSON.stringify(row[h]) : (row[h] ?? '')}</td>`).join('') + '</tr>'
     ).join('');
   }
 
@@ -10825,29 +10922,62 @@
   function openAucCalculator() { document.getElementById('aucModal').style.display = 'block'; }
   function closeAucCalculator() { document.getElementById('aucModal').style.display = 'none'; }
   
+  // Bug 5 fix : bornes de vraisemblance clinique pour le calculateur AUC (Calvert)
+  const AUC_BOUNDS = { age: [18, 120], poids: [20, 300], creat: [20, 1500], target: [1, 10] };
+
   function calculateClCr() {
     const sexe = document.getElementById('auc_sexe').value;
     const age = parseFloat(document.getElementById('auc_age').value) || 0;
     const poids = parseFloat(document.getElementById('auc_poids').value) || 0;
     const creat = parseFloat(document.getElementById('auc_creatinine').value) || 0;
+    const clcrResultEl = document.getElementById('auc_clcr_result');
+    const formulaEl = document.getElementById('auc_clcr_formula');
 
-    if (!age || !poids || !creat) return;
+    if (!age || !poids || !creat) {
+      clcrResultEl.textContent = '--';
+      formulaEl.textContent = '';
+      return;
+    }
+
+    if (age < AUC_BOUNDS.age[0] || age > AUC_BOUNDS.age[1] ||
+        poids < AUC_BOUNDS.poids[0] || poids > AUC_BOUNDS.poids[1] ||
+        creat < AUC_BOUNDS.creat[0] || creat > AUC_BOUNDS.creat[1]) {
+      clcrResultEl.textContent = '--';
+      formulaEl.textContent = `⚠️ Valeur(s) hors bornes cliniques (Âge : ${AUC_BOUNDS.age[0]}-${AUC_BOUNDS.age[1]} ans, Poids : ${AUC_BOUNDS.poids[0]}-${AUC_BOUNDS.poids[1]} kg, Créatinine : ${AUC_BOUNDS.creat[0]}-${AUC_BOUNDS.creat[1]} µmol/L).`;
+      document.getElementById('auc_dose_result').textContent = '--';
+      document.getElementById('auc_dose_formula').textContent = '';
+      return;
+    }
+
     let clcr = ((140 - age) * poids) / (0.814 * creat);
     if (sexe === 'Femme') clcr *= 0.85;
 
-    document.getElementById('auc_clcr_result').textContent = clcr.toFixed(2);
-    document.getElementById('auc_clcr_formula').textContent = `Cockcroft-Gault: ((140-${age})*${poids})/(0.814*${creat}) ${sexe === 'Femme' ? '* 0.85' : ''}`;
+    clcrResultEl.textContent = clcr.toFixed(2);
+    formulaEl.textContent = `Cockcroft-Gault: ((140-${age})*${poids})/(0.814*${creat}) ${sexe === 'Femme' ? '* 0.85' : ''}`;
     calculateCarboplatinDose();
   }
 
   function calculateCarboplatinDose() {
     const clcr = parseFloat(document.getElementById('auc_clcr_result').textContent) || 0;
     const target = parseFloat(document.getElementById('auc_target').value) || 0;
-    if (clcr && target) {
-      const dose = target * (clcr + 25);
-      document.getElementById('auc_dose_result').textContent = dose.toFixed(2);
-      document.getElementById('auc_dose_formula').textContent = `Calvert: ${target} * (${clcr.toFixed(2)} + 25)`;
+    const doseResultEl = document.getElementById('auc_dose_result');
+    const formulaEl = document.getElementById('auc_dose_formula');
+
+    if (!clcr || !target) {
+      doseResultEl.textContent = '--';
+      formulaEl.textContent = '';
+      return;
     }
+
+    if (target < AUC_BOUNDS.target[0] || target > AUC_BOUNDS.target[1]) {
+      doseResultEl.textContent = '--';
+      formulaEl.textContent = `⚠️ AUC cible hors bornes cliniques (${AUC_BOUNDS.target[0]}-${AUC_BOUNDS.target[1]}).`;
+      return;
+    }
+
+    const dose = target * (clcr + 25);
+    doseResultEl.textContent = dose.toFixed(2);
+    formulaEl.textContent = `Calvert: ${target} * (${clcr.toFixed(2)} + 25)`;
   }
 
   function applyAucDose() {
@@ -10864,6 +10994,9 @@
     loadActiveData();
     refreshAllUI();
 
+    // Bug 4 fix : empêcher la sélection d'une date de naissance future via le sélecteur natif
+    document.getElementById('pBirthDate').max = new Date().toISOString().slice(0, 10);
+
     // Écouteurs Patient & Formulaires
     ['pService', 'pIpp', 'pLastName', 'pFirstName', 'pGender', 'pBirthDate', 'pHeight', 'pWeight'].forEach(id => {
       document.getElementById(id).addEventListener('input', recalculateAll);
@@ -10872,7 +11005,11 @@
     document.getElementById('rxTherapy').addEventListener('change', updatePreparationSection);
     document.getElementById('rxDiluent').addEventListener('change', updatePreparationSection);
     document.getElementById('rxPosology').addEventListener('input', recalculateAll);
-    document.getElementById('rxPosologyUnit').addEventListener('change', recalculateAll);
+    document.getElementById('rxPosologyUnit').addEventListener('change', (e) => {
+      recalculateAll();
+      // Bug 6 fix : n'ouvrir le calculateur AUC que sur un changement explicite d'unité
+      if (e.target.value === "AUC") openAucCalculator();
+    });
     document.getElementById('rxCoeff').addEventListener('input', recalculateAll);
     document.getElementById('rxPrescribedDose').addEventListener('input', updateDeviationAndPreparation);
 
@@ -10883,12 +11020,12 @@
       lbl.textContent = isVal ? "VALIDE" : "NON VALIDE";
       lbl.className = `status-label status-${isVal ? 'VALID' : 'INVALID'}`;
       appState.validation.isValidated = isVal;
-      document.getElementById('exportBtn').disabled = !document.getElementById('validatorName').value.trim();
+      updateExportButtonState();
     });
 
     document.getElementById('validatorName').addEventListener('input', (e) => {
       appState.validation.validatorName = e.target.value.trim();
-      document.getElementById('exportBtn').disabled = !appState.validation.validatorName;
+      updateExportButtonState();
     });
 
     document.getElementById('validatorComments').addEventListener('input', (e) => {
