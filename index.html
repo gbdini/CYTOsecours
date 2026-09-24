@@ -1,6 +1,4 @@
-==========================    VERSION FULL POUR VAL 10 aout 2026     ============================
-
-<!-- V4 avec les correctifs de bugs suite tests intégration. Voir dossier des tests -->
+<!-- V5 du 24.09.2026 avec les correctifs de bugs suite tests intégration. Voir dossier des tests -->
 
 
 <!DOCTYPE html>
@@ -9844,11 +9842,11 @@
     y = drawTable(y, prepRows, [55, 135]);
     y += 5;
 
-    // --- Contrôles & Libération ---
-    y = drawSectionTitle(y, 'Contrôles & Libération');
+    // --- Contrôles, photos & Libération ---
+    y = drawSectionTitle(y, 'Contrôles, photos & Libération');
     const ctrlRows = [
       { cells: [{ text: 'Calculs & étapes :', bold: true }, { text: 'Visa 1 :' }, { text: 'Visa 2 :' }] },
-      { cells: [{ text: 'Contrôles visuels :', bold: true }, { text: 'Visa 1 :' }, { text: 'Visa 2 :' }] },
+      { cells: [{ text: 'Ctrl visuel & photos :', bold: true }, { text: 'Visa 1 :' }, { text: 'Visa 2 :' }] },
       { cells: [{ text: 'Libéré / Non libéré', bold: true }, { text: 'Visa 1 :' }, { text: 'Visa 2 :' }] }
     ];
     y = drawTable(y, ctrlRows, [55, 67.5, 67.5]);
@@ -9939,7 +9937,7 @@
 
       // Ligne 7 : Périmé le
       doc.setFontSize(8);
-      doc.text('Périmé le : ______________', midX, rowY[6] + rowsH[6] / 2 + 1.3, { align: 'center' });
+      doc.text('Fabriqué le : ___________ Périmé le : ______________', midX, rowY[6] + rowsH[6] / 2 + 1.3, { align: 'center' });
     }
 
     // Grille 2×2, alignée à gauche (comme le tableau Platypus, non centré)
@@ -10414,31 +10412,27 @@
 
     y = sectionTitle(y, 'Données & Calculs');
     const donneesCalculsRows = [
-      { cells: [{ text: 'Préparation :', bold: true }, { text: titrePrincipal, colspan: 3 }] },
-      { cells: [{ text: 'Prep-ID :', bold: true }, { text: '' }, { text: 'Service :', bold: true }, { text: '' }] },
-      { cells: [{ text: 'IPP patient :', bold: true }, { text: '' }, { text: 'Nom & Prénom :', bold: true }, { text: '' }] },
-      { cells: [{ text: 'Né(e) le :', bold: true }, { text: '' }, { text: 'Genre :', bold: true }, { text: '' }] },
-      { cells: [{ text: 'Taille (cm) :', bold: true }, { text: '' }, { text: 'Poids (kg) :', bold: true }, { text: '' }] },
+      { cells: [{ text: 'Préparation', bold: true }, { text: titrePrincipal, colspan: 3 }] },
+      { cells: [{ text: 'Prep-ID', bold: true }, { text: '' }, { text: 'Service :', bold: true }, { text: '' }] },
+      { cells: [{ text: 'IPP patient ', bold: true }, { text: '' }, { text: 'Nom & Prénom :', bold: true }, { text: '' }] },
+      { cells: [{ text: 'Né(e) le ', bold: true }, { text: '' }, { text: 'Genre :', bold: true }, { text: '' }] },
+      { cells: [{ text: 'Taille (cm) ', bold: true }, { text: '' }, { text: 'Poids (kg) :', bold: true }, { text: '' }] },
       { cells: [{ text: 'Calcul surface corp. selon Mosteller (m2)', bold: true }, { text: 'Racine(Taille(cm) × Poids(kg) / 3600) =', colspan: 3 }] },
-      { cells: [{ text: 'Dose prescrite :', bold: true }, { text: '', colspan: 3 }] },
-      { cells: [{ text: 'Concentration :', bold: true }, { text: '', colspan: 3 }] },
-      { cells: [{ text: 'Volume de principe actif :', bold: true }, { text: '', colspan: 3 }] },
-      { cells: [{ text: 'Volume de diluant :', bold: true }, { text: '', colspan: 3 }] },
-      { cells: [{ text: 'Volume final :', bold: true }, { text: volumeFinalDisplay1, colspan: 3 }] },
-      { cells: [{ text: 'Article :', bold: true }, { text: articleValue, colspan: 3 }] },
-      { cells: [{ text: 'Reconstitution :', bold: true }, { text: reconstitutionDisplay, colspan: 3 }] },
-      { cells: [{ text: "Dispositif d'administration :", bold: true }, { text: dispositifValue, colspan: 3 }] },
-      { cells: [{ text: 'Type de remplissage :', bold: true }, { text: typeRemplissageValue, colspan: 3 }] },
-      { cells: [{ text: 'Conservation :', bold: true }, { text: conservationValue, colspan: 3 }] },
-      { cells: [{ text: 'Calculs :', bold: true }, { text: '', colspan: 3 }] },
-      { cells: [{ text: 'Contrôles :', bold: true }, { text: '', colspan: 3 }] },
-      { cells: [{ text: 'Préparé par :', bold: true }, { text: '', colspan: 3 }] },
-      { cells: [{ text: 'Préparé le :', bold: true }, { text: '', colspan: 3 }] },
-      { cells: [{ text: 'Contrôlé par :', bold: true }, { text: '', colspan: 3 }] },
-      { cells: [{ text: 'Contrôlé le :', bold: true }, { text: '', colspan: 3 }] },
-      { cells: [{ text: 'Validé par :', bold: true }, { text: '', colspan: 3 }] },
-      { cells: [{ text: 'Contrôlé par :', bold: true }, { text: 'Données et calculs contrôlés par :', colspan: 3 }] },
-      { cells: [{ text: 'Statut préparation :', bold: true }, { text: 'Valide / NON-Valide / — Le : ___/___/____', colspan: 3 }] }
+      { cells: [{ text: 'Posologie ', bold: true }, { text: '', colspan: 3 }] },
+      { cells: [{ text: 'Référence protocole', bold: true }, { text: '', colspan: 3 }] },
+      { cells: [{ text: 'Dose prescrite ', bold: true }, { text: '', colspan: 3 }] },
+      { cells: [{ text: 'Article ', bold: true }, { text: articleValue, colspan: 3 }] },
+      { cells: [{ text: 'Reconstitution ', bold: true }, { text: reconstitutionDisplay, colspan: 3 }] },
+      { cells: [{ text: "Dispositif d'administration ", bold: true }, { text: `${deviceName}${deviceVol ? ' ' + deviceVol : ''}` }] },
+      { cells: [{ text: 'Type de remplissage ', bold: true }, { text: typeRemplissageValue, colspan: 3 }] },
+      { cells: [{ text: 'Conservation ', bold: true }, { text: conservationValue, colspan: 3 }] },
+      { cells: [{ text: 'Concentration ', bold: true }, { text: '', colspan: 3 }] },
+      { cells: [{ text: 'Volume de principe actif', bold: true }, { text: '', colspan: 3 }] },
+      { cells: [{ text: 'Volume de diluant', bold: true }, { text: '', colspan: 3 }] },
+      { cells: [{ text: 'Volume final', bold: true }, { text: volumeFinalDisplay1, colspan: 3 }] },
+      { cells: [{ text: 'Fait par', bold: true }, { text: 'Visa :____________ Date :____________', colspan: 3 }] },
+      { cells: [{ text: 'Contrôlé par', bold: true }, { text: 'Visa :____________ Date :____________', colspan: 3 }] },
+      { cells: [{ text: 'Statut ordre', bold: true }, { text: 'Valide / NON-Valide / — Visa 1 :____________ & Visa 2 :____________', colspan: 3 }] }
     ];
     y = drawTable(y, donneesCalculsRows, [45, 45, 45, 45]);
 
@@ -10449,7 +10443,7 @@
     y = drawBanner(y, titrePrincipal);
 
     const infosGeneralesRows = [
-      { cells: [{ text: 'Prep-ID : _________ Service : _________', colspan: 6 }] },
+      { cells: [{ text: 'Prep-ID : __________________ Service : _________', colspan: 6 }] },
       { cells: [{ text: 'Nom :_____________ Prénom : _____________ DDN :___/___/____ Cure :___ J :___ ', colspan: 6 }] },
       { cells: [{ text: 'Dose prescrite : _______ Dans : ____ mL de : NaCl / G5 / G10 / Ringer / Sans diluant / Autre : ________', colspan: 6 }] },
       { cells: [{ text: 'Remarque du valideur : ________________________________________________________________', colspan: 6 }] },
@@ -10465,20 +10459,21 @@
     y = sectionTitle(y, 'Liste des produits et du matériel');
     const listeProduitsRows = [
       { cells: [{ text: 'Article :', bold: true }, { text: articleValue }] },
-      { cells: [{ text: 'Quantité :', bold: true }, { text: '_____    Pièce. — Lot & Exp. :' }] },
+      { cells: [{ text: 'Quantité :', bold: true }, { text: '_____    Pce(s) — Lot & Exp. :' }] },
       { cells: [{ text: 'Diluant :', bold: true }, { text: '_________    — Volume :_________ mL — Lot & Exp. :' }] },
-      { cells: [{ text: 'Matériel :', bold: true }, { text: materialsText }] }
+      { cells: [{ text: 'Matériel :', bold: true }, { text: materialsText }] },
+      { cells: [{ text: 'Contrôles :', bold: true }, { text: 'Préparé et photographié par ____________ Contrôlé par ____________' }] }
     ];
     y = drawTable(y, listeProduitsRows, [30, 160]);
     y += 2.5;
 
-    y = sectionTitle(y, 'Préparation');
+    y = sectionTitle(y, 'Préparation | Préparé par : ___________ | Isolateur N°_____ ');
     const preparationRows = [
-      { cells: [{ text: 'Principe Actif :', bold: true }, { text: drugName }] },
+      { cells: [{ text: 'Principe Actif :', bold: true }, { text: articleValue }] },
       { cells: [{ text: 'Reconstitution :', bold: true }, { text: `${reconstitutionDisplay}    — Lot & Exp. :` }] },
       { cells: [{ text: 'Volume de P. Actif :', bold: true }, { text: '_________    — Visa Contrôle :' }] },
-      { cells: [{ text: 'Diluant :', bold: true }, { text: '_________    — Visa Contrôle :' }] },
-      { cells: [{ text: "Dispositif d'admin. :", bold: true }, { text: dispositifValue }] },
+      { cells: [{ text: 'Diluant :', bold: true }, { text: '_________ mL   — Visa Contrôle :' }] },
+      { cells: [{ text: "Dispositif d'admin. :", bold: true }, { text: `${deviceName}${deviceVol ? ' ' + deviceVol : ''}` }] },
       { cells: [{ text: 'Type de remplissage :', bold: true }, { text: typeRemplissageValue }] },
       { cells: [{ text: 'Volume final :', bold: true }, { text: volumeFinalDisplay2 }] },
       { cells: [{ text: 'Remarque pour la préparation :', bold: true }, { text: '' }] },
@@ -10487,12 +10482,11 @@
     y = drawTable(y, preparationRows, [55, 135]);
     y += 2.5;
 
-    y = sectionTitle(y, 'Contrôles & Visas');
+    y = sectionTitle(y, 'Contrôles, photos & Libération');
     const controlesRows = [
-      { cells: [{ text: 'Date & Isolateur :', bold: true }, { text: 'Produit le :' }, { text: 'Isolateur :' }] },
-      { cells: [{ text: 'Contrôles Préparateurs :', bold: true }, { text: 'Visa 1 :' }, { text: 'Visa 2 :' }] },
-      { cells: [{ text: 'Contrôles Pharmaciens :', bold: true }, { text: 'Visa 1 :' }, { text: 'Visa 2 :' }] },
-      { cells: [{ text: 'Statut :', bold: true }, { text: 'Libéré' }, { text: 'Non libéré' }] }
+      { cells: [{ text: 'Calculs & étapes :', bold: true }, { text: 'Visa 1 :' }, { text: 'Visa 2 :' }] },
+      { cells: [{ text: 'Ctrl visuel & photos :', bold: true }, { text: 'Visa 1 :' }, { text: 'Visa 2 :' }] },
+      { cells: [{ text: 'Libéré / Non libéré', bold: true }, { text: 'Visa 1 :' }, { text: 'Visa 2 :' }] }
     ];
     y = drawTable(y, controlesRows, [55, 67.5, 67.5]);
 
